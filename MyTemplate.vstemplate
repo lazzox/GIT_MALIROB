@@ -1,13 +1,13 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>XDRIVE_TIKVIC_V2.0</Name>
-    <Description>Originalni kod od Marka Tikvica za odometriju</Description>
+    <Name>XDRIVE_15.3_XDRIVE</Name>
+    <Description>15.03.Ispravljeni neki bagovi</Description>
     <ProjectType>CandCPP</ProjectType>
     <ProjectSubType>
     </ProjectSubType>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>XDRIVE_TIKVIC_V2.0</DefaultName>
+    <DefaultName>XDRIVE_15.3_XDRIVE</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <LocationField>Enabled</LocationField>
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
