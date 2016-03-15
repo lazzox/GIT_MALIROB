@@ -87,7 +87,7 @@ int main(void)
 	nuliraj_poziciju_robota();
 	//zadaj_teta(180,1);
 	while(1){
-		
+		//ovo je neka izmena u kodu za KEFU!!!!!!
 	
 		
 		//demo_1();

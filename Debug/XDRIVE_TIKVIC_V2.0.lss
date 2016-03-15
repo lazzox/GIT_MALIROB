@@ -25,11 +25,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  10 .debug_frame  00000c7c  00000000  00000000  0001a800  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00002ff4  00000000  00000000  0001b47c  2**0
+ 11 .debug_str    00002fe0  00000000  00000000  0001b47c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00002982  00000000  00000000  0001e470  2**0
+ 12 .debug_loc    00002982  00000000  00000000  0001e45c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000308  00000000  00000000  00020df2  2**0
+ 13 .debug_ranges 00000308  00000000  00000000  00020dde  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -12742,7 +12742,7 @@ int main(void)
 	nuliraj_poziciju_robota();
     68f0:	1a de       	rcall	.-972    	; 0x6526 <nuliraj_poziciju_robota>
 	while(1){
-		
+		//ovo je neka izmena u kodu za KEFU!!!!!!
 	
 		
 		//demo_1();

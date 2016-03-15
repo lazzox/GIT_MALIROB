@@ -1561,26 +1561,26 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
  .debug_frame   0x00000b88       0xd0 usart_driver.o
  .debug_frame   0x00000c58       0x24 X-Drive_Odometry.o
 
-.debug_str      0x00000000     0x2ff4
+.debug_str      0x00000000     0x2fe0
  *(.debug_str)
- .debug_str     0x00000000      0xaa3 adc_driver.o
-                                0xaf2 (size before relaxing)
- .debug_str     0x00000aa3      0xe39 hardware.o
-                               0x159a (size before relaxing)
- .debug_str     0x000018dc      0x428 interrupt.o
-                                0xc0b (size before relaxing)
- .debug_str     0x00001d04      0x315 mechanism.o
-                                0xe35 (size before relaxing)
- .debug_str     0x00002019      0x80b port_driver.o
-                                0xb9c (size before relaxing)
- .debug_str     0x00002824      0x575 TC_driver.o
-                                0xbcf (size before relaxing)
- .debug_str     0x00002d99      0x113 testiranje.o
-                                0x812 (size before relaxing)
- .debug_str     0x00002eac      0x104 usart_driver.o
-                                0x3c8 (size before relaxing)
- .debug_str     0x00002fb0       0x44 X-Drive_Odometry.o
-                                0x4f5 (size before relaxing)
+ .debug_str     0x00000000      0xa8f adc_driver.o
+                                0xade (size before relaxing)
+ .debug_str     0x00000a8f      0xe39 hardware.o
+                               0x1586 (size before relaxing)
+ .debug_str     0x000018c8      0x428 interrupt.o
+                                0xbf7 (size before relaxing)
+ .debug_str     0x00001cf0      0x315 mechanism.o
+                                0xe21 (size before relaxing)
+ .debug_str     0x00002005      0x80b port_driver.o
+                                0xb88 (size before relaxing)
+ .debug_str     0x00002810      0x575 TC_driver.o
+                                0xbbb (size before relaxing)
+ .debug_str     0x00002d85      0x113 testiranje.o
+                                0x7fe (size before relaxing)
+ .debug_str     0x00002e98      0x104 usart_driver.o
+                                0x3b4 (size before relaxing)
+ .debug_str     0x00002f9c       0x44 X-Drive_Odometry.o
+                                0x4e1 (size before relaxing)
 
 .debug_loc      0x00000000     0x2982
  *(.debug_loc)
