@@ -52,12 +52,13 @@ int main(void)
 	//inicijalizuj_servo_tajmer_20ms();
 	//pomeri_servo_1(0);
 	
-	_delay_ms(2000);					//cekanje da se stabilizuje sistem
+	_delay_ms(1000);					//cekanje da se stabilizuje sistem
 	
 	////"Hello" poruka - usart_e0
-	/*USART_TXBuffer_PutByte(&USART_E0_data, 'h');	//e
-	_delay_ms(8000);
-	USART_TXBuffer_PutByte(&USART_E0_data, 'e');	//e
+	//USART_TXBuffer_PutByte(&USART_E0_data, 'h');	//e
+	//_delay_ms(8000);
+	//USART_TXBuffer_PutByte(&USART_E0_data, 'e');	//e
+	/*
 	_delay_ms(2000);
 	USART_TXBuffer_PutByte(&USART_E0_data, 'l');	//e
 	_delay_ms(2000);
@@ -83,16 +84,43 @@ int main(void)
 	//USART_TXBuffer_PutByte(&USART_C0_data, 108);	//l
 	//USART_TXBuffer_PutByte(&USART_C0_data, 108);	//l
 	//USART_TXBuffer_PutByte(&USART_C0_data, 111);	//o
-	
 	nuliraj_poziciju_robota();
+	//demo_3()
 	//zadaj_teta(180,1);
-	while(1){
+	while(1)
+	{
 		//ovo je neka izmena u kodu za KEFU!!!!!!
 	
+	
+		//{
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, 'L');	//O
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, 'A');	//K
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, 'Z');	//!
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, 'A');	//O
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, 'R');	//K
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, '!');	//!
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, 'c');	//O
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, 'A');	//K
+			//_delay_ms(200);
+			//USART_TXBuffer_PutByte(&USART_E0_data, 'R');	//!
+			//_delay_ms(200);
+			//while(1);
+		//}
+		
+		
 		
 		//demo_1();
-		demo_2();
-		//demo_3();
+		//demo_2();
+		demo_3();
+		//demo_4();
 		//zadaj_X_Y(500, 500, 1);
 		//if (stigao_flag){
 		//zadaj_X_Y(1000,0,2zadaj_X_Y(1000,0,1););

@@ -38,10 +38,10 @@ void Podesi_PID_Pojacanja(void)
 {
 	//PID parametri
 	//Regulacija pravolinijskog kretanja
-	Kp_pravolinijski = 7;
-	Ki_pravolinijski = 1.3;
-	Kd_pravolinijski = 5;
-	Kp_teta_pravolinijski = 6;
+	Kp_pravolinijski = 3.5;	//7
+	Ki_pravolinijski = 1;
+	Kd_pravolinijski = 6;
+	Kp_teta_pravolinijski = 1.5;	//6
 		
 	//Regulacija ugaonog zakretanja
 	Kp_teta = 7;
@@ -50,7 +50,7 @@ void Podesi_PID_Pojacanja(void)
 	//Kp_teta_okretanje = 6;
 		
 	//Regulacija brzine
-	Kp_brzina = 0.4;
+	Kp_brzina = 0.3;	//0.4
 	Ki_brzina = 0;
 	Kd_brzina = 0;
 		

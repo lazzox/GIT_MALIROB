@@ -290,11 +290,11 @@ void Pracenje_pravca(void)
 		}
 		else if(smer_zadati == 1)	//Samo napred
 		{
-			smer_trenutni = 1;
+			smer_trenutni = 1; //1
 		}
 		else if(smer_zadati == 2)	//Samo nazad
 		{
-			smer_trenutni = -1;
+			smer_trenutni = -1; //-1
 			teta_cilj -= krug180;
 		}
 	
@@ -307,13 +307,12 @@ void Pracenje_pravca(void)
 		{
 			stigao_flag = 1;
 			
- 			USART_TXBuffer_PutByte(&USART_E0_data, 79);	//O
- 			USART_TXBuffer_PutByte(&USART_E0_data, 75);	//K
- 			USART_TXBuffer_PutByte(&USART_E0_data, 33);	//!
- 			
- 			USART_TXBuffer_PutByte(&USART_E1_data, 79);	//O
- 			USART_TXBuffer_PutByte(&USART_E1_data, 75);	//K
- 			USART_TXBuffer_PutByte(&USART_E1_data, 33);	//!
+//  			USART_TXBuffer_PutByte(&USART_E0_data, 75);	//O
+//  			USART_TXBuffer_PutByte(&USART_E0_data, 75);	//K
+//  			USART_TXBuffer_PutByte(&USART_E0_data, 33);	//!
+//  			USART_TXBuffer_PutByte(&USART_E1_data, 79);	//O
+//  			USART_TXBuffer_PutByte(&USART_E1_data, 75);	//K
+//  			USART_TXBuffer_PutByte(&USART_E1_data, 33);	//!
 		}
 		
 		if (teta_cilj_final != 0xFFFFFFFF)	//ako treba zauzmemo krajnji ugao
@@ -475,13 +474,13 @@ void PID_brzinski(void)
 		PID_ukupni_R = -PWM_perioda;
 		
 	//levi motor
-	if (PID_ukupni_L > 5)/*if (PID_ukupni_L > 5)*/	//smer 1
+	if (PID_ukupni_L > 3)/*if (PID_ukupni_L > 5)*/	//smer 1
 	{
 		PORT_ClearPins(&PORTH, 0b00010000);	//IN_A2=0
 		PORT_SetPins(&PORTH, 0b10000000);	//IN_B2=1
 		TCF1.CCBBUF = PID_ukupni_L;
 	}
-	else if (PID_ukupni_L < -5)	//smer 2
+	else if (PID_ukupni_L < -3)	//smer 2
 	{
 		PORT_ClearPins(&PORTH, 0b10000000);	//IN_B2=0
 		PORT_SetPins(&PORTH, 0b00010000);	//IN_A2=1,
@@ -489,16 +488,14 @@ void PID_brzinski(void)
 	}
 	else	//kocenje
 		PORT_ClearPins(&PORTH, 0b10010000);	//IN_A2=0, IN_B2=0	
-
-	
 	//desni motor
-	if (PID_ukupni_R > 5) //smer 1
+	if (PID_ukupni_R > 3) //smer 1
 	{
 		PORT_ClearPins(&PORTH, 0b00001000);	//IN_B1=0
 		PORT_SetPins(&PORTH, 0b00000001);	//IN_A1=1
 		TCF1.CCABUF = PID_ukupni_R;
 	}
-	else if (PID_ukupni_R < -5)	//smer 2
+	else if (PID_ukupni_R < -3)	//smer 2
 	{
 		PORT_ClearPins(&PORTH, 0b00000001);	//IN_A1=0
 		PORT_SetPins(&PORTH, 0b00001000);	//IN_B1=1
