@@ -35,7 +35,7 @@ void nuliraj_poziciju_robota(void)
 	X_pos = X_cilj = 0;
 	Y_pos = Y_cilj = 0;
 	teta = teta_cilj = teta_cilj_final = 0;
-	smer_zadati = smer_trenutni = 2; //Idi pravo
+	smer_zadati = smer_trenutni = 1; //Idi pravo
 	TCD0.CNT = 0;			//Desni enkoder
 	TCD1.CNT = 0;			//Levi enkoder
 	count_L = 0;
@@ -82,15 +82,15 @@ void inicijalizuj_bluetooth()
 	sei();						//global interrupts enabled
 }
 
-void posalji_poruku_bt(char *poruka)
+void sendMsg(char *poruka)
 {
 	while(*poruka != '\0'){
-		posalji_karakter_bt(*poruka);
+		sendChar(*poruka);
 		poruka++;
 	}
 }
 
-void posalji_karakter_bt(char c)
+void sendChar(char c)
 {
 	USARTE0.DATA = c;
 	while(!(USARTE0.STATUS & (1 << 5)));
@@ -144,14 +144,13 @@ ISR(TCF0_OVF_vect)
  
  void demo_2(void)
  {
- 	if (step1==0)
- 	{
  		switch(step1)
  		{
  			case 0:
  			if(flag1 == 0){
  				stigao_flag = 0;
  				flag1 = 1;
+				USART_TXBuffer_PutByte(&USART_E0_data, '1111');
  				zadaj_X_Y(700, 0, 1);
  			}
  			else if(stigao_flag == 1){
@@ -163,7 +162,9 @@ ISR(TCF0_OVF_vect)
  			if(flag1 == 0){
  				stigao_flag = 0;
  				flag1 = 1;
- 				zadaj_teta(180,1);
+				USART_TXBuffer_PutByte(&USART_E0_data, '2');
+				zadaj_X_Y_teta(0,0,180,2);
+ 				//zadaj_X_Y(0,0,2);
  				} else if(stigao_flag == 1){
  				step1++;
  				flag1 = 0;
@@ -172,37 +173,6 @@ ISR(TCF0_OVF_vect)
  			default:
  			break;
  		}
- 	}
- 	else
- 	{
- 		switch(step1)
- 		{
- 			case 0:
- 			if(flag1 == 0){
- 				stigao_flag = 0;
- 				flag1 = 1;
- 				zadaj_X_Y(250, 0, 1);
- 			}
- 			else if(stigao_flag == 1){
- 				step1++;
- 				flag1 = 0;
- 			}
- 			break;
- 			case 1:
- 			if(flag1 == 0){
- 				stigao_flag = 0;
- 				flag1 = 1;
- 				zadaj_teta(180,1);
- 				} else if(stigao_flag == 1){
- 				step1++;
- 				flag1 = 0;
- 			}
- 			break;
- 			default:
- 			break;
- 		}
- 	}
- 		
  }
 
 void demo_3(void)
@@ -215,7 +185,6 @@ void demo_3(void)
 			stigao_flag = 0;
 			flag1 = 1;
 			USART_TXBuffer_PutByte(&USART_E0_data, '0');
-			_delay_ms(200);
 			USART_TXBuffer_PutByte(&USART_E0_data, '0');
 			zadaj_X_Y(700,0,1);
 		}
@@ -229,13 +198,12 @@ void demo_3(void)
 		case 1:
 		if(flag1 == 0)
 		{
-			_delay_ms(1000);
+			USART_TXBuffer_PutByte(&USART_E0_data, '1');
+			USART_TXBuffer_PutByte(&USART_E0_data, '1');
+			_delay_ms(1050);
 			stigao_flag = 0;
 			flag1 = 1;
-			USART_TXBuffer_PutByte(&USART_E0_data, '1');
-			_delay_ms(200);
-			USART_TXBuffer_PutByte(&USART_E0_data, '1');
-			zadaj_X_Y(0, 0, 2);
+			zadaj_X_Y(0, 0, 0);
 		}
 		else if(stigao_flag == 1)
 		{
@@ -251,7 +219,6 @@ void demo_3(void)
 			stigao_flag = 0;
 			flag1 = 1;
 			USART_TXBuffer_PutByte(&USART_E0_data, '2');
-			_delay_ms(200);
 			USART_TXBuffer_PutByte(&USART_E0_data, '2');
 			zadaj_teta(180,0);
 		}
@@ -261,7 +228,24 @@ void demo_3(void)
 			flag1 = 0;
 			//_delay_ms(8000);
 		}
-		//break;
+		break;
+		case 3:
+		if(flag1 == 0)
+		{
+			_delay_ms(5000);
+			stigao_flag = 0;
+			flag1 = 1;
+			USART_TXBuffer_PutByte(&USART_E0_data, '3');
+			USART_TXBuffer_PutByte(&USART_E0_data, '3');
+			zadaj_X_Y(250,250,2);
+		}
+		else if(stigao_flag == 1)
+		{
+			step1++;
+			flag1 = 0;
+			//_delay_ms(8000);
+		}
+		break;
 		//case 2:
 		//if(flag1 == 0){
 			//stigao_flag = 0;
@@ -288,46 +272,82 @@ void demo_3(void)
 	}
 }
 
- void demo_4(void)
- {
- 	switch(step1)
- 	{
- 		case 0:
- 		if(flag1 == 0){
- 			USART_TXBuffer_PutByte(&USART_E0_data, '0');
- 			stigao_flag = 0;
- 			flag1 = 1;
- 			zadaj_X_Y(200, 0, 1);
- 		}
- 		else if(stigao_flag == 1){
- 			step1++;
- 			flag1 = 0;
- 		}
- 		break;
- 		case 1:
- 		if(flag1 == 0){
- 			_delay_ms(1000);
- 			USART_TXBuffer_PutByte(&USART_E0_data, '1');
- 			stigao_flag = 0;
- 			flag1 = 1;
- 			zadaj_X_Y(500, 500, 2);
- 		}
- 		else if(stigao_flag == 1){
- 			step1++;
- 			flag1 = 0;
- 		}
- 		break;
- // 		case 1:
- // 		if(flag1 == 0){
- // 			stigao_flag = 0;
- // 			flag1 = 1;
- // 			zadaj_teta(180,1);
- // 			} else if(stigao_flag == 1){
- // 			step1++;
- // 			flag1 = 0;
- // 		}
- // 		break;
-  		default:
-  		break;
- 	}
- }
+ //void demo_4(void)
+ //{
+ 	//switch(step1)
+ 	//{
+ 		//case 0:
+ 		//if(flag1 == 0){
+ 			//USART_TXBuffer_PutByte(&USART_E0_data, '0');
+ 			//stigao_flag = 0;
+ 			//flag1 = 1;
+ 			//zadaj_X_Y(200, 0, 1);
+ 		//}
+ 		//else if(stigao_flag == 1){
+ 			//step1++;
+ 			//flag1 = 0;
+ 		//}
+ 		//break;
+ 		//case 1:
+ 		//if(flag1 == 0){
+ 			//_delay_ms(1000);
+ 			//USART_TXBuffer_PutByte(&USART_E0_data, '1');
+ 			//stigao_flag = 0;
+ 			//flag1 = 1;
+ 			//zadaj_X_Y(500, 500, 2);
+ 		//}
+ 		//else if(stigao_flag == 1){
+ 			//step1++;
+ 			//flag1 = 0;
+ 		//}
+ 		//break;
+  		//case 1:
+  		//if(flag1 == 0){
+  			//stigao_flag = 0;
+  			//flag1 = 1;
+  			//zadaj_teta(180,1);
+  			//} else if(stigao_flag == 1){
+  			//step1++;
+  			//flag1 = 0;
+  		//}
+  		//break;
+  		//default:
+  		//break;
+ 	//}
+//
+ //}
+ //void demo_4(void)
+ //{
+	 //switch(step1==0)
+	 //{
+	 //case 0:
+	 //{
+		 //if(flag1 == 0){
+			 //stigao_flag = 0;
+			 //flag1 = 1;
+			 //zadaj_X_Y(700,0,1);
+		 //}
+		 //else if(stigao_flag == 1){
+			 //step1++;
+			 //flag1 = 0;
+		 //}
+		 //break;
+	 //}
+	//case 1:
+	 //{
+		 //if(flag1 == 0){
+			 //stigao_flag = 0;
+			 //flag1 = 1;
+			 //zadaj_X_Y(0,0,2);
+		 //}
+		 //else if(stigao_flag == 1){
+			 //step1++;
+			 //flag1 = 0;
+		 //}
+		 //break;
+	 //}
+	 //default;
+	 //break;
+	 //}
+	 //
+ //}

@@ -12,6 +12,8 @@
 #include "math.h"
 #include "float.h"
 
+
+
 volatile float
 //regulacija
 Kp_pravolinijski,
@@ -182,11 +184,11 @@ void Racunanje_trenutne_pozicije(void)
 	{
 		if(PASIVNI_QDEC_OWF_R == 1)
 		{
-			sample_R16 = count_R + ~(last_count_R);
+			sample_R16 = count_R + ~(last_count_R);	//sample_R16 = count_R + ~(last_count_R);
 		}
 		else if(PASIVNI_QDEC_OWF_R == 2)
 		{
-			sample_R16 = -(last_count_R + ~(count_R));
+			sample_R16 = -(last_count_R + ~(count_R));	//sample_R16 = -(last_count_R + ~(count_R));
 		}
 		
 		PASIVNI_QDEC_OWF_R = 0;
@@ -201,11 +203,11 @@ void Racunanje_trenutne_pozicije(void)
 	{
 		if(PASIVNI_QDEC_OWF_L == 1)
 		{
-			sample_L16 = count_L + ~(last_count_L);
+			sample_L16 = count_L + ~(last_count_L);//sample_L16 = count_L + ~(last_count_L);
 		} 
 		else if(PASIVNI_QDEC_OWF_L == 2)
 		{
-			sample_L16 = -(last_count_L + ~(count_L));
+			sample_L16 = -(last_count_L + ~(count_L));//sample_L16 = -(last_count_L + ~(count_L));
 		}
 		
 		PASIVNI_QDEC_OWF_L = 0;
@@ -217,21 +219,22 @@ void Racunanje_trenutne_pozicije(void)
 	last_count_L = count_L;
 	
 	//potrebne vrednosti za trigonometriju
-	translacija_10ms = (sample_R16 + sample_L16);
+	translacija_10ms = -(sample_R16 + sample_L16);	//translacija_10ms = (sample_R16 + sample_L16);
 	rotacija_10ms = (sample_R16 - sample_L16);
 	teta += rotacija_10ms;
 	translacija += ((long)(translacija_10ms));
-	
+
+		
 	//ako predje ceo krug u pozitivnom smeru  //PROVERI OVO
 	if(teta >= krug360)
-		teta -= krug360;
-	
+	teta -= krug360;
+		
 	//ako predje u negativan smer
 	if(teta < 0)
-		teta += krug360;	
+	teta += krug360;
 	
 	//racunanje pozicije
-	double X_pos_cos, Y_pos_sin;
+	volatile double X_pos_cos, Y_pos_sin;
 	X_pos_cos = cos(((double)teta / krug180) * M_PI);
 	Y_pos_sin = sin(((double)teta / krug180) * M_PI);
 	X_pos += (int)(((double)translacija_10ms * X_pos_cos));
@@ -242,7 +245,7 @@ void Pracenje_pravca(void)
 {
 	//Ulaz X_cilj i Y_cilj
 	//Izlaz je teta_cilj i rastojanje_cilj
-	double X_razlika, Y_razlika, XY_zbir, teta_razlika, teta_cilj_radian;
+	double XY_zbir, teta_razlika, teta_cilj_radian;
 	
 	//ako stignu nove zadate koordinate
 	if (X_cilj_stari != X_cilj || Y_cilj_stari != Y_cilj)	
@@ -253,10 +256,12 @@ void Pracenje_pravca(void)
 	X_cilj_stari = X_cilj;
 	Y_cilj_stari = Y_cilj;
 	
+	double X_razlika, Y_razlika;
 	X_razlika = (X_cilj - X_pos);
 	Y_razlika = (Y_cilj - Y_pos);
 	X_razlika *= X_razlika;
 	Y_razlika *= Y_razlika;
+	
 	XY_zbir = X_razlika + Y_razlika;
 	rastojanje_cilj_temp = sqrt(XY_zbir);
 	
@@ -290,11 +295,11 @@ void Pracenje_pravca(void)
 		}
 		else if(smer_zadati == 1)	//Samo napred
 		{
-			smer_trenutni = 1; //1
+			smer_trenutni = -1; //1
 		}
 		else if(smer_zadati == 2)	//Samo nazad
 		{
-			smer_trenutni = -1; //-1
+			smer_trenutni = 1; //-1
 			teta_cilj -= krug180;
 		}
 	
@@ -458,7 +463,7 @@ void PID_brzinski(void)
 
 	PID_ukupni_L = (float)(Pe_brzina_L) * Kp_brzina + (float)(Ie_brzina_L) * Ki_brzina + (float)(De_brzina_L) * Kd_brzina; // znak - je zbog smera kretanja
 	PID_ukupni_R = (float)(Pe_brzina_R) * Kp_brzina + (float)(Ie_brzina_R) * Ki_brzina + (float)(De_brzina_R) * Kd_brzina;
-	
+
 	//preskaliranje - ne mora da se radi posto su max_brzina_motora i PWM_perioda slicne velicine
 	//PID_ukupni_L = (PID_ukupni_L * PWM_perioda) / max_brzina_motora; 
 	

@@ -16,8 +16,8 @@ void zadaj_X_Y(signed long x, signed long y, unsigned char dir);
 void zadaj_teta(signed long teta_des, unsigned char dir);
 
 void inicijalizuj_bluetooth();
-void posalji_poruku_bt(char *poruka);
-void posalji_karakter_bt(char c);
+void sendMsg(char *poruka);
+void sendChar(char c);
 
 void inicijalizuj_servo_tajmer_20ms();
 void pomeri_servo_1(uint16_t deg);
