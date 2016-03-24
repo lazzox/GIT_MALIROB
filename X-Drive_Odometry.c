@@ -2,7 +2,7 @@
  * X_Drive_Odometry.c
  *
  * Poslednje_izmene: 24/03/2016 20:07:41
- * Autor: Kefa
+ * Autor: Kefa 2
  */ 
 
 #include <avr/io.h>
