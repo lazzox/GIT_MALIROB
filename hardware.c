@@ -25,12 +25,12 @@ void Podesi_Parametre_Robota(void)
 	krug45 =  krug360 >> 3;			
 
 	smer_zadati = 1;						//1-napred, 2-nazad, 0-sam bira smer
-	zeljena_pravolinijska_brzina = 300;		//brzina kojom se pravo krece robot
-	zeljena_brzina_okretanja = zeljena_pravolinijska_brzina / 2; //brzina kojom se okrece robot
+	zeljena_pravolinijska_brzina = 400;		//brzina kojom se pravo krece robot
+	zeljena_brzina_okretanja = 300; //brzina kojom se okrece robot
 	max_brzina_motora = 800;				//eksperimentalno utvrdjena max brzina motora [impuls/vreme_odabiranja(3ms)] (max je oko 1000)
 	
 	modifikovana_zeljena_pravolinijska_brzina = zeljena_pravolinijska_brzina;
-	rezervni_ugao = krug45;		//vrednost ugaone greske preko koje se radi reorijentacija robota
+	rezervni_ugao = krug45;		//vrednost ugaone greske preko koje se radi reorijentacija robota  
 	PWM_perioda = 800;			//PWM tajmer broji do 800 - frekvenicja 20KHz
 }
 
@@ -38,24 +38,24 @@ void Podesi_PID_Pojacanja(void)
 {
 	//PID parametri
 	//Regulacija pravolinijskog kretanja
-	Kp_pravolinijski = 3.5;	//7
-	Ki_pravolinijski = 1;
-	Kd_pravolinijski = 6;
-	Kp_teta_pravolinijski = 1.5;	//6
+	Kp_pravolinijski = 6;		//1.89625
+	Ki_pravolinijski = 1.3;
+	Kd_pravolinijski = 125;		//6
+	Kp_teta_pravolinijski = 15;	
 		
 	//Regulacija ugaonog zakretanja
-	Kp_teta = 7;
-	Ki_teta = 1;
-	Kd_teta = 11;
-	//Kp_teta_okretanje = 6;
+	Kp_teta = 20;
+	Ki_teta = 1.2;
+	Kd_teta = 20;
+	Kp_teta_okretanje = 1.5;
 		
 	//Regulacija brzine
-	Kp_brzina = 0.3;	//0.4
+	Kp_brzina = 0.2;	//0.4
 	Ki_brzina = 0;
 	Kd_brzina = 0;
-		
+
 	//Ubrzavanje po rampi
-	Accel_PID_pos = 2;
+	Accel_PID_pos = 2;	//bilo 2
 }
 
 void Podesi_QDEC(void)

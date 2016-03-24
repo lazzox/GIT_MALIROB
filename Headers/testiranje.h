@@ -14,6 +14,9 @@ void nuliraj_poziciju_robota(void);
 void zadaj_X_Y_teta(signed long x, signed long y, signed long teta_des, unsigned char dir);
 void zadaj_X_Y(signed long x, signed long y, unsigned char dir);
 void zadaj_teta(signed long teta_des, unsigned char dir);
+void idi_pravo();
+void idi_unazad();
+void rotiraj();
 
 void inicijalizuj_bluetooth();
 void sendMsg(char *poruka);

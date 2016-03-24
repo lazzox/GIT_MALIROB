@@ -39,7 +39,6 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../adc_driver.c \
 ../hardware.c \
-../HexLookUp.c \
 ../interrupt.c \
 ../mechanism.c \
 ../port_driver.c \
@@ -58,7 +57,6 @@ ASM_SRCS +=
 OBJS +=  \
 adc_driver.o \
 hardware.o \
-HexLookUp.o \
 interrupt.o \
 mechanism.o \
 port_driver.o \
@@ -70,7 +68,6 @@ X-Drive_Odometry.o
 OBJS_AS_ARGS +=  \
 adc_driver.o \
 hardware.o \
-HexLookUp.o \
 interrupt.o \
 mechanism.o \
 port_driver.o \
@@ -82,7 +79,6 @@ X-Drive_Odometry.o
 C_DEPS +=  \
 adc_driver.d \
 hardware.d \
-HexLookUp.d \
 interrupt.d \
 mechanism.d \
 port_driver.d \
@@ -94,7 +90,6 @@ X-Drive_Odometry.d
 C_DEPS_AS_ARGS +=  \
 adc_driver.d \
 hardware.d \
-HexLookUp.d \
 interrupt.d \
 mechanism.d \
 port_driver.d \
@@ -114,8 +109,6 @@ OUTPUT_FILE_DEP:= ./makedep.mk
 LIB_DEP+= 
 
 # AVR32/GNU C Compiler
-
-
 
 
 

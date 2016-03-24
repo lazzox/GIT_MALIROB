@@ -37,7 +37,7 @@ int main(void)
 {
 	int msg_counter = 0;
 	int servo_counter = 0;
-	
+	//char servo_flag = 0;
 	Podesi_Oscilator();					//podesavanje oscilatora
 	Podesi_Parametre_Robota();			//podesavanje broja impulsa u krugu
 	Podesi_PID_Pojacanja();				//podesavanje pojacanja PID regulatora
@@ -48,25 +48,27 @@ int main(void)
 	Podesi_Interapt();					//podesavanje interapt prioriteta
 	Podesi_Pinove();					//podesavanje I/O pinova
 	Podesi_USART_Komunikaciju();		//podesavanje komunikacije
-	//inicijalizuj_bluetooth();
+	inicijalizuj_bluetooth();
 	//inicijalizuj_servo_tajmer_20ms();
 	//pomeri_servo_1(0);
-	_delay_ms(1500);					//cekanje da se stabilizuje sistem
-	
+	//sendChar('k');
+	//_delay_ms(1000);					//cekanje da se stabilizuje sistem
 	nuliraj_poziciju_robota();
-	//TEST ZONA
-	
-	
+	//CheckInputMotorControl();
 	while(1)
 	{
-		//demo_2();
-		
+		  //if (sys_time>1400)
+		  //{
+			  //sendChar('W');
+			  //sys_time=0;
+		  //}
+		demo_3();
 		//Racunanje trenutne pozicije
 		if (Rac_tren_poz_sample_counter >= 3){		//9ms   3
 			Rac_tren_poz_sample_counter = 0;
 			Racunanje_trenutne_pozicije();
 		}
-
+		
 		//Korekcija pravca i distance prema cilju
 		if(Pracenje_Pravca_sample_counter >= 30){	//90ms   30
 			msg_counter++;
@@ -82,7 +84,5 @@ int main(void)
 			PID_pravolinijski();
 			//PID_brzinski se poziva direktno u interaptu sistemskog tajmera TCE1!
 		}
-		
 	}
 }
-

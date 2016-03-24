@@ -6,8 +6,6 @@ adc_driver.c
 
 hardware.c
 
-HexLookUp.c
-
 interrupt.c
 
 mechanism.c

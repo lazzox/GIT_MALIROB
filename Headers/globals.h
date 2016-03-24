@@ -91,6 +91,7 @@ last_motor_count_L,
 scale_factor_for_mm,
 vreme_cekanja_tete,
 vreme_pozicioniranja,
+sys_time,
 Accel_PID_pos,
 fsm_timer;
 

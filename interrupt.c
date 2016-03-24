@@ -19,6 +19,7 @@ ISR(TCE1_OVF_vect)	//3ms
 {	
 	vreme_cekanja_tete++;
 	vreme_pozicioniranja++;
+	sys_time++;
 	
 	sample_counter_niz_1++;
 	sample_counter_niz_2++;
