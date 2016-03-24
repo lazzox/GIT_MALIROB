@@ -1573,7 +1573,7 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
  .debug_frame   0x00000c50       0xd0 usart_driver.o
  .debug_frame   0x00000d20       0x24 X-Drive_Odometry.o
 
-.debug_str      0x00000000     0x3020
+.debug_str      0x00000000     0x3056
  *(.debug_str)
  .debug_str     0x00000000      0xaaf adc_driver.o
                                 0xafe (size before relaxing)
@@ -1591,8 +1591,8 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
                                 0x86d (size before relaxing)
  .debug_str     0x00002ed8      0x104 usart_driver.o
                                 0x3d4 (size before relaxing)
- .debug_str     0x00002fdc       0x44 X-Drive_Odometry.o
-                                0x4a5 (size before relaxing)
+ .debug_str     0x00002fdc       0x7a X-Drive_Odometry.o
+                                0x485 (size before relaxing)
 
 .debug_loc      0x00000000     0x2ca6
  *(.debug_loc)
