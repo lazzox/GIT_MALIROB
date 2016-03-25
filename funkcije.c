@@ -1,12 +1,12 @@
 /*
- * testiranje.c
+ * funkcije.c
  *
- * Created: 16/11/15 14:36:10
- *  Author: marko
+ * Created: 26/03/16 00:43:50
+ * Author: Team Axis
  */ 
 
 #include <avr/io.h>
-#include "Headers/testiranje.h"
+#include "Headers/funkcije.h"
 #include "Headers/avr_compiler.h"
 #include "Headers/usart_driver.h"
 #include "Headers/port_driver.h"
@@ -320,9 +320,8 @@ ISR(TCF0_OVF_vect)
 
  		
  }
- 
- 
-  void demo_3(void)
+
+ void demo_3(void)
   {
 	  
 	  switch(step1)
@@ -440,7 +439,7 @@ ISR(TCF0_OVF_vect)
 	  
   }
 
-void demo_6(void)
+ void demo_6(void)
 {
 	switch(step1)
 	{
@@ -449,12 +448,12 @@ void demo_6(void)
 		{
 			stigao_flag = 0;
 			flag1 = 1;
-			send_Msg("00");
+			sendMsg("00");
 			zadaj_X_Y_teta(500,0,0,2);
 		}
 		else if(stigao_flag == 1)
 		{
-			send_Msg("01");
+			sendMsg("01");
 			step1++;
 			flag1 = 0;
 		}
@@ -465,13 +464,13 @@ void demo_6(void)
 			stigao_flag = 0;
 			flag1 = 1;
 			zadaj_X_Y_teta(0,0,0,1);
-			send_Msg("10");
+			sendMsg("10");
 		}
 		else if(stigao_flag == 1)
 		{
 			//step1++;
 			flag1 = 0;
-			send_Msg("11");
+			sendMsg("11");
 		}
 		break;
 		case 2:

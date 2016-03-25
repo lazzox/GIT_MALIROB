@@ -1,5 +1,5 @@
 /*
- * X_Drive_Odometry.c
+ * main.c
  *
  * Poslednje_izmene: 24/03/2016 20:07:41
  * Autor: Kefa 
@@ -27,7 +27,7 @@
 #include "Headers/globals.h"
 #include "Headers/mechanism.h"
 #include "Headers/hardware.h"
-#include "Headers/testiranje.h"
+#include "Headers/funkcije.h"
 
 volatile signed int
 PID_brzina_L,
