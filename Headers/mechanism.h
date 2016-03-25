@@ -17,7 +17,6 @@ void PID_izlazni(void);
 void Pracenje_pravca(void);
 void CheckInputMotorControl(void);
 void Communication(void);
-int PGM_Mode(void);
 
 
 #endif /* MECHANISM_H_ */
