@@ -517,31 +517,21 @@ void PID_brzinski(void)
 		
 }
 
-//Obrisi ovo govance
 void CheckInputMotorControl(void) // direktno zaustavljanje motora preko OPUSTANJE registra
 {
 	//stop na prekidac
 	if((PORTB.IN & 0b00000001) == 0)
 	{
+		sendChar('S');
 		set_direct_out = 1;
 		PID_brzina_L = 0;
 		PID_brzina_R = 0;
+		//USART_TXBuffer_PutByte(&USART_E1_data, 0xBB);
 	}	
 	else
-	{	
-		sendMsg("PRGM mode");
+	{
+		sendChar('T');		
 		set_direct_out = 0;
 	}	
-}
-
-int PGM_Mode(){
-	if((PORTB.IN & 0b00000001) == 0)
-	{//Pritisnut taster
-		return 1;	
-	}
-	else{
-		set_direct_out = 0;
-		return 0;
-	}
 }
 

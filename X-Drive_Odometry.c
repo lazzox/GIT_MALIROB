@@ -2,7 +2,8 @@
  * X_Drive_Odometry.c
  *
  * Poslednje_izmene: 24/03/2016 20:07:41
- * Autor: Kefa 2
+ * Autor: Kefa 
+ proba proba
  */ 
 
 #include <avr/io.h>
@@ -52,7 +53,7 @@ int main(void)
 	//inicijalizuj_servo_tajmer_20ms();
 	//pomeri_servo_1(0);
 	//sendChar('k');
-	_delay_ms(1000);					//cekanje da se stabilizuje sistem
+	//_delay_ms(1000);					//cekanje da se stabilizuje sistem
 	nuliraj_poziciju_robota();
 	//CheckInputMotorControl();
 	while(1)
@@ -62,20 +63,7 @@ int main(void)
 			  //sendChar('W');
 			  //sys_time=0;
 		  //}
-		demo_2();
-		
-		//PROGRAMMING MODE - kod koji ako je pritisnut CRVENI taster gasi motore
-		while(PGM_Mode() == 1){
-			set_direct_out = 1;
-			PID_brzina_L = 0;
-			PID_brzina_R = 0;
-			sendMsg("PGM_MODE");
-			_delay_ms(300);
-		}
-		set_direct_out = 0;
-		
-		
-		
+		demo_3();
 		//Racunanje trenutne pozicije
 		if (Rac_tren_poz_sample_counter >= 3){		//9ms   3
 			Rac_tren_poz_sample_counter = 0;
@@ -97,6 +85,5 @@ int main(void)
 			PID_pravolinijski();
 			//PID_brzinski se poziva direktno u interaptu sistemskog tajmera TCE1!
 		}
-		
-	}//while
-}//main
+	}
+}
