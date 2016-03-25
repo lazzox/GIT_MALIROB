@@ -3,8 +3,19 @@
  *
  * Poslednje_izmene: 24/03/2016 20:07:41
  * Autor: Kefa 
- proba proba
- pojebao me idiot
+ 
+ Izmene:
+ -Namesten baudrate za LCD
+ -Dodate funkcije za sendMsg/sendChar
+ -Dodata PGM_Mode funkcija dodat taster
+ -Uklonjeno checkmotors..() funkcija
+ -Proveriti brzinskiPid koji se poziva u interaptu sta se tamo nalazi
+ --tamo ne sme biti nikakvih komplikovanih operacija ili definisanja promenljivih
+ -Pidovanje
+ 
+ Potrebne izmene:
+ -Izbaciti inicijalizaciju bluetooth-a
+ -Promeniti baudrate
  */ 
 
 #include <avr/io.h>
@@ -50,7 +61,9 @@ int main(void)
 	Podesi_Interapt();					//podesavanje interapt prioriteta
 	Podesi_Pinove();					//podesavanje I/O pinova
 	Podesi_USART_Komunikaciju();		//podesavanje komunikacije
-	inicijalizuj_bluetooth();
+	//inicijalizuj_bluetooth();
+	//Trebalo bi da sve radi i bez ove funkcije iznad, treba je izbrisati!!!
+	
 	//inicijalizuj_servo_tajmer_20ms();
 	//pomeri_servo_1(0);
 	//sendChar('k');
@@ -59,20 +72,16 @@ int main(void)
 	//CheckInputMotorControl();
 	while(1)
 	{
-		  //if (sys_time>1400)
-		  //{
-			  //sendChar('W');
-			  //sys_time=0;
-		  //}
 		demo_3();
+		
 		//Racunanje trenutne pozicije
-		if (Rac_tren_poz_sample_counter >= 3){		//9ms   3
+		if (Rac_tren_poz_sample_counter >= 3){		 //3 x 1.5ms = 4.5ms
 			Rac_tren_poz_sample_counter = 0;
 			Racunanje_trenutne_pozicije();
 		}
 		
 		//Korekcija pravca i distance prema cilju
-		if(Pracenje_Pravca_sample_counter >= 30){	//90ms   30
+		if(Pracenje_Pravca_sample_counter >= 30){	//30 x 1.5ms = 45ms
 			msg_counter++;
 			servo_counter++;
 			Pracenje_Pravca_sample_counter = 0;
@@ -80,11 +89,22 @@ int main(void)
 		}
 		
 		//PID regulacija
-		if(PID_pozicioni_sample_counter >= 3){		//9ms    3
+		if(PID_pozicioni_sample_counter >= 3){		//3 x 1.5ms = 4.5ms
 			PID_pozicioni_sample_counter = 0;
 			PID_ugaoni();
 			PID_pravolinijski();
 			//PID_brzinski se poziva direktno u interaptu sistemskog tajmera TCE1!
 		}
-	}
-}
+		
+		//PROGRAMMING MODE - kod koji ako je pritisnut CRVENI taster gasi motore
+		while(PGM_Mode() == 1){
+			set_direct_out = 1;
+			PID_brzina_L = 0;
+			PID_brzina_R = 0;
+			sendMsg("PGM_MODE");
+			_delay_ms(300);
+		}
+		set_direct_out = 0;
+		
+	}//while
+}//main

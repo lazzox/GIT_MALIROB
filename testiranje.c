@@ -85,6 +85,7 @@ void rotiraj(){
 	
 }
 
+//ovo treba izbaciti jer se ovo vec radi na drugom mestu
 void inicijalizuj_bluetooth()
 {
 	//USARTE1, PE7 -> USARTE1_TX, PE6 -> USARTE1_RX
@@ -102,7 +103,7 @@ void inicijalizuj_bluetooth()
 	sei();						//global interrupts enabled
 }
 
-void send_Msg(char *poruka)
+void sendMsg(char *poruka)
 {
 	while(*poruka != '\0'){
 		sendChar(*poruka);
