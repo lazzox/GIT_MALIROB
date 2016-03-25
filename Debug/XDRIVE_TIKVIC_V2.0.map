@@ -249,8 +249,10 @@ Discarded input sections
  .bss           0x00000000        0x0 interrupt.o
  .text          0x00000000        0x0 mechanism.o
  .bss           0x00000000        0x0 mechanism.o
+ .rodata.str1.1
+                0x00000000        0xa mechanism.o
  .text.CheckInputMotorControl
-                0x00000000       0x38 mechanism.o
+                0x00000000       0x30 mechanism.o
  .bss.last_motor_count_L
                 0x00000000        0x2 mechanism.o
  .bss.last_motor_count_R
@@ -321,18 +323,17 @@ Discarded input sections
                 0x00000000       0x5e testiranje.o
  .text.zadaj_teta
                 0x00000000       0x4c testiranje.o
+ .text.delay1   0x00000000       0x2c testiranje.o
  .text.rotiraj  0x00000000        0x2 testiranje.o
- .text.send_Msg
-                0x00000000       0x1e testiranje.o
  .text.inicijalizuj_servo_tajmer_20ms
                 0x00000000       0x30 testiranje.o
  .text.pomeri_servo_1
                 0x00000000       0x1e testiranje.o
- .text.demo_1   0x00000000       0x42 testiranje.o
- .text.demo_2   0x00000000      0x18c testiranje.o
+ .text.demo_1   0x00000000      0x19c testiranje.o
+ .text.demo_3   0x00000000      0x1a8 testiranje.o
  .rodata.str1.1
                 0x00000000        0xc testiranje.o
- .text.demo_6   0x00000000      0x138 testiranje.o
+ .text.demo_6   0x00000000      0x13c testiranje.o
  .text.demo_4   0x00000000       0xb2 testiranje.o
  .text          0x00000000        0x0 usart_driver.o
  .bss           0x00000000        0x0 usart_driver.o
@@ -660,7 +661,7 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x72f4
+.text           0x00000000     0x74b0
  *(.vectors)
  .vectors       0x00000000      0x1f4 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7/crtx128a1.o
                 0x00000000                __vector_default
@@ -858,271 +859,276 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
                 0x00000360      0x138 hardware.o
                 0x00000360                Podesi_Parametre_Robota
  .text.Podesi_PID_Pojacanja
-                0x00000498       0xfe hardware.o
+                0x00000498       0xee hardware.o
                 0x00000498                Podesi_PID_Pojacanja
  .text.Podesi_QDEC
-                0x00000596       0x70 hardware.o
-                0x00000596                Podesi_QDEC
+                0x00000586       0x70 hardware.o
+                0x00000586                Podesi_QDEC
  .text.PodesiADC
-                0x00000606       0x6c hardware.o
-                0x00000606                PodesiADC
+                0x000005f6       0x6c hardware.o
+                0x000005f6                PodesiADC
  .text.Podesi_Interapt
-                0x00000672       0x20 hardware.o
-                0x00000672                Podesi_Interapt
+                0x00000662       0x20 hardware.o
+                0x00000662                Podesi_Interapt
  .text.Podesi_Oscilator
-                0x00000692       0x24 hardware.o
-                0x00000692                Podesi_Oscilator
+                0x00000682       0x24 hardware.o
+                0x00000682                Podesi_Oscilator
  .text.Podesi_USART_Komunikaciju
-                0x000006b6      0x100 hardware.o
-                0x000006b6                Podesi_USART_Komunikaciju
+                0x000006a6      0x100 hardware.o
+                0x000006a6                Podesi_USART_Komunikaciju
  .text.Podesi_Tajmere
-                0x000007b6       0x20 hardware.o
-                0x000007b6                Podesi_Tajmere
+                0x000007a6       0x20 hardware.o
+                0x000007a6                Podesi_Tajmere
  .text.Podesi_PWM
-                0x000007d6       0x28 hardware.o
-                0x000007d6                Podesi_PWM
+                0x000007c6       0x28 hardware.o
+                0x000007c6                Podesi_PWM
  .text.Podesi_Pinove
-                0x000007fe       0x54 hardware.o
-                0x000007fe                Podesi_Pinove
+                0x000007ee       0x54 hardware.o
+                0x000007ee                Podesi_Pinove
  .text.__vector_53
-                0x00000852      0x1e0 interrupt.o
-                0x00000852                __vector_53
+                0x00000842      0x1e0 interrupt.o
+                0x00000842                __vector_53
  .text.__vector_58
-                0x00000a32     0x1206 interrupt.o
-                0x00000a32                __vector_58
+                0x00000a22     0x1206 interrupt.o
+                0x00000a22                __vector_58
  .text.__vector_61
-                0x00001c38     0x1992 interrupt.o
-                0x00001c38                __vector_61
+                0x00001c28     0x1992 interrupt.o
+                0x00001c28                __vector_61
  .text.__vector_25
-                0x000035ca     0x105e interrupt.o
-                0x000035ca                __vector_25
+                0x000035ba     0x105e interrupt.o
+                0x000035ba                __vector_25
  .text.__vector_77
-                0x00004628       0x54 interrupt.o
-                0x00004628                __vector_77
+                0x00004618       0x54 interrupt.o
+                0x00004618                __vector_77
  .text.__vector_83
-                0x0000467c       0x54 interrupt.o
-                0x0000467c                __vector_83
+                0x0000466c       0x54 interrupt.o
+                0x0000466c                __vector_83
  .text.__vector_59
-                0x000046d0       0x6a interrupt.o
-                0x000046d0                __vector_59
+                0x000046c0       0x6a interrupt.o
+                0x000046c0                __vector_59
  .text.__vector_62
-                0x0000473a       0x6a interrupt.o
-                0x0000473a                __vector_62
+                0x0000472a       0x6a interrupt.o
+                0x0000472a                __vector_62
  .text.__vector_26
-                0x000047a4       0x6a interrupt.o
-                0x000047a4                __vector_26
+                0x00004794       0x6a interrupt.o
+                0x00004794                __vector_26
  .text.__vector_34
-                0x0000480e      0x3b6 interrupt.o
-                0x0000480e                __vector_34
+                0x000047fe      0x3b6 interrupt.o
+                0x000047fe                __vector_34
  .text.Racunanje_trenutne_pozicije
-                0x00004bc4      0x44e mechanism.o
-                0x00004bc4                Racunanje_trenutne_pozicije
+                0x00004bb4      0x44e mechanism.o
+                0x00004bb4                Racunanje_trenutne_pozicije
  .text.Pracenje_pravca
-                0x00005012      0x4dc mechanism.o
-                0x00005012                Pracenje_pravca
+                0x00005002      0x4dc mechanism.o
+                0x00005002                Pracenje_pravca
  .text.PID_pravolinijski
-                0x000054ee      0x4bc mechanism.o
-                0x000054ee                PID_pravolinijski
+                0x000054de      0x4bc mechanism.o
+                0x000054de                PID_pravolinijski
  .text.PID_ugaoni
-                0x000059aa      0x4fc mechanism.o
-                0x000059aa                PID_ugaoni
+                0x0000599a      0x500 mechanism.o
+                0x0000599a                PID_ugaoni
  .text.PID_brzinski
-                0x00005ea6      0x62e mechanism.o
-                0x00005ea6                PID_brzinski
+                0x00005e9a      0x634 mechanism.o
+                0x00005e9a                PID_brzinski
+ .text.PGM_Mode
+                0x000064ce       0x1e mechanism.o
+                0x000064ce                PGM_Mode
  .text.PORT_ConfigureInterrupt0
-                0x000064d4        0xe port_driver.o
-                0x000064d4                PORT_ConfigureInterrupt0
+                0x000064ec        0xe port_driver.o
+                0x000064ec                PORT_ConfigureInterrupt0
  .text.PORT_ConfigurePins
-                0x000064e2       0x32 port_driver.o
-                0x000064e2                PORT_ConfigurePins
+                0x000064fa       0x32 port_driver.o
+                0x000064fa                PORT_ConfigurePins
  .text.TC1_ConfigClockSource
-                0x00006514        0xc TC_driver.o
-                0x00006514                TC1_ConfigClockSource
+                0x0000652c        0xc TC_driver.o
+                0x0000652c                TC1_ConfigClockSource
  .text.TC1_SetOverflowIntLevel
-                0x00006520        0xc TC_driver.o
-                0x00006520                TC1_SetOverflowIntLevel
+                0x00006538        0xc TC_driver.o
+                0x00006538                TC1_SetOverflowIntLevel
  .text.nuliraj_poziciju_robota
-                0x0000652c       0xbc testiranje.o
-                0x0000652c                nuliraj_poziciju_robota
+                0x00006544       0xbc testiranje.o
+                0x00006544                nuliraj_poziciju_robota
  .text.idi_pravo
-                0x000065e8       0xac testiranje.o
-                0x000065e8                idi_pravo
+                0x00006600       0xac testiranje.o
+                0x00006600                idi_pravo
  .text.idi_unazad
-                0x00006694       0xac testiranje.o
-                0x00006694                idi_unazad
+                0x000066ac       0xac testiranje.o
+                0x000066ac                idi_unazad
  .text.inicijalizuj_bluetooth
-                0x00006740       0x3e testiranje.o
-                0x00006740                inicijalizuj_bluetooth
+                0x00006758       0x3e testiranje.o
+                0x00006758                inicijalizuj_bluetooth
  .text.sendChar
-                0x0000677e       0x10 testiranje.o
-                0x0000677e                sendChar
+                0x00006796       0x10 testiranje.o
+                0x00006796                sendChar
+ .text.sendMsg  0x000067a6       0x1c testiranje.o
+                0x000067a6                sendMsg
  .text.__vector_110
-                0x0000678e       0x3e testiranje.o
-                0x0000678e                __vector_110
+                0x000067c2       0x3e testiranje.o
+                0x000067c2                __vector_110
  .text.__vector_108
-                0x000067cc       0x3e testiranje.o
-                0x000067cc                __vector_108
- .text.demo_3   0x0000680a      0x190 testiranje.o
-                0x0000680a                demo_3
+                0x00006800       0x3e testiranje.o
+                0x00006800                __vector_108
+ .text.demo_2   0x0000683e      0x2cc testiranje.o
+                0x0000683e                demo_2
  .text.USART_InterruptDriver_Initialize
-                0x0000699a       0x28 usart_driver.o
-                0x0000699a                USART_InterruptDriver_Initialize
+                0x00006b0a       0x28 usart_driver.o
+                0x00006b0a                USART_InterruptDriver_Initialize
  .text.USART_TXBuffer_FreeSpace
-                0x000069c2       0x1c usart_driver.o
-                0x000069c2                USART_TXBuffer_FreeSpace
+                0x00006b32       0x1c usart_driver.o
+                0x00006b32                USART_TXBuffer_FreeSpace
  .text.USART_TXBuffer_PutByte
-                0x000069de       0x3e usart_driver.o
-                0x000069de                USART_TXBuffer_PutByte
+                0x00006b4e       0x3e usart_driver.o
+                0x00006b4e                USART_TXBuffer_PutByte
  .text.USART_RXBuffer_GetByte
-                0x00006a1c       0x1c usart_driver.o
-                0x00006a1c                USART_RXBuffer_GetByte
+                0x00006b8c       0x1c usart_driver.o
+                0x00006b8c                USART_RXBuffer_GetByte
  .text.USART_RXComplete
-                0x00006a38       0x3c usart_driver.o
-                0x00006a38                USART_RXComplete
+                0x00006ba8       0x3c usart_driver.o
+                0x00006ba8                USART_RXComplete
  .text.USART_DataRegEmpty
-                0x00006a74       0x4e usart_driver.o
-                0x00006a74                USART_DataRegEmpty
- .text.main     0x00006ac2       0x64 X-Drive_Odometry.o
-                0x00006ac2                main
+                0x00006be4       0x4e usart_driver.o
+                0x00006be4                USART_DataRegEmpty
+ .text.main     0x00006c32       0xb0 X-Drive_Odometry.o
+                0x00006c32                main
  .text.avr-libc.fplib
-                0x00006b26        0xa d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(addsf3.o)
-                0x00006b26                __subsf3
-                0x00006b28                __addsf3
+                0x00006ce2        0xa d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(addsf3.o)
+                0x00006ce2                __subsf3
+                0x00006ce4                __addsf3
  .text.avr-libc.fplib
-                0x00006b30       0xc0 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(addsf3x.o)
-                0x00006b4a                __addsf3x
+                0x00006cec       0xc0 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(addsf3x.o)
+                0x00006d06                __addsf3x
  .text.avr-libc.fplib
-                0x00006bf0       0x74 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(atan2.o)
-                0x00006c0e                atan2
+                0x00006dac       0x74 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(atan2.o)
+                0x00006dca                atan2
  .text.avr-libc.fplib
-                0x00006c64       0x50 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(atan.o)
-                0x00006c64                atan
+                0x00006e20       0x50 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(atan.o)
+                0x00006e20                atan
  .text.avr-libc.fplib
-                0x00006cb4        0x8 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(cmpsf2.o)
-                0x00006cb4                __nesf2
-                0x00006cb4                __eqsf2
-                0x00006cb4                __cmpsf2
-                0x00006cb4                __ltsf2
-                0x00006cb4                __lesf2
+                0x00006e70        0x8 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(cmpsf2.o)
+                0x00006e70                __nesf2
+                0x00006e70                __eqsf2
+                0x00006e70                __cmpsf2
+                0x00006e70                __ltsf2
+                0x00006e70                __lesf2
  .text.avr-libc.fplib
-                0x00006cbc        0x6 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(cos.o)
-                0x00006cbc                cos
+                0x00006e78        0x6 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(cos.o)
+                0x00006e78                cos
  .text.avr-libc.fplib
-                0x00006cc2        0x4 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(divsf3.o)
-                0x00006cc2                __divsf3
+                0x00006e7e        0x4 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(divsf3.o)
+                0x00006e7e                __divsf3
  .text.avr-libc.fplib
-                0x00006cc6       0xcc d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(divsf3x.o)
-                0x00006cdc                __divsf3x
-                0x00006ce0                __divsf3_pse
+                0x00006e82       0xcc d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(divsf3x.o)
+                0x00006e98                __divsf3x
+                0x00006e9c                __divsf3_pse
  .text.avr-libc.fplib
-                0x00006d92        0xa d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fixsfsi.o)
-                0x00006d92                __fixsfsi
+                0x00006f4e        0xa d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fixsfsi.o)
+                0x00006f4e                __fixsfsi
  .text.avr-libc.fplib
-                0x00006d9c       0x58 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fixunssfsi.o)
-                0x00006d9c                __fixunssfsi
+                0x00006f58       0x58 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fixunssfsi.o)
+                0x00006f58                __fixunssfsi
  .text.avr-libc.fplib
-                0x00006df4       0x7a d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(floatsisf.o)
-                0x00006df4                __floatunsisf
-                0x00006df8                __floatsisf
+                0x00006fb0       0x7a d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(floatsisf.o)
+                0x00006fb0                __floatunsisf
+                0x00006fb4                __floatsisf
  .text.avr-libc.fplib
-                0x00006e6e       0x48 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_cmp.o)
-                0x00006e6e                __fp_cmp
+                0x0000702a       0x48 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_cmp.o)
+                0x0000702a                __fp_cmp
  .text.avr-libc.fplib
-                0x00006eb6        0xc d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_inf.o)
-                0x00006eb6                __fp_inf
+                0x00007072        0xc d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_inf.o)
+                0x00007072                __fp_inf
  .text.avr-libc.fplib
-                0x00006ec2        0x6 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_nan.o)
-                0x00006ec2                __fp_nan
+                0x0000707e        0x6 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_nan.o)
+                0x0000707e                __fp_nan
  .text.avr-libc.fplib
-                0x00006ec8       0x4a d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_powser.o)
-                0x00006ec8                __fp_powser
+                0x00007084       0x4a d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_powser.o)
+                0x00007084                __fp_powser
  .text.avr-libc.fplib
-                0x00006f12        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_pscA.o)
-                0x00006f12                __fp_pscA
+                0x000070ce        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_pscA.o)
+                0x000070ce                __fp_pscA
  .text.avr-libc.fplib
-                0x00006f20        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_pscB.o)
-                0x00006f20                __fp_pscB
+                0x000070dc        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_pscB.o)
+                0x000070dc                __fp_pscB
  .text.avr-libc.fplib
-                0x00006f2e       0x50 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_rempio2.o)
-                0x00006f30                __fp_rempio2
+                0x000070ea       0x50 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_rempio2.o)
+                0x000070ec                __fp_rempio2
  .text.avr-libc.fplib
-                0x00006f7e       0x22 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_round.o)
-                0x00006f7e                __fp_round
+                0x0000713a       0x22 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_round.o)
+                0x0000713a                __fp_round
  .text.avr-libc.fplib
-                0x00006fa0       0x22 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_sinus.o)
-                0x00006fa0                __fp_sinus
+                0x0000715c       0x22 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_sinus.o)
+                0x0000715c                __fp_sinus
  .text.avr-libc.fplib
-                0x00006fc2       0x44 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_split3.o)
-                0x00006fc2                __fp_split3
-                0x00006fd2                __fp_splitA
+                0x0000717e       0x44 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_split3.o)
+                0x0000717e                __fp_split3
+                0x0000718e                __fp_splitA
  .text.avr-libc.fplib
-                0x00007006        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_zero.o)
-                0x00007006                __fp_zero
-                0x00007008                __fp_szero
+                0x000071c2        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_zero.o)
+                0x000071c2                __fp_zero
+                0x000071c4                __fp_szero
  .text.avr-libc.fplib
-                0x00007014        0x8 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(gesf2.o)
-                0x00007014                __gesf2
-                0x00007014                __gtsf2
+                0x000071d0        0x8 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(gesf2.o)
+                0x000071d0                __gesf2
+                0x000071d0                __gtsf2
  .text.avr-libc.fplib
-                0x0000701c        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(inverse.o)
-                0x0000701c                inverse
+                0x000071d8        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(inverse.o)
+                0x000071d8                inverse
  .text.avr-libc.fplib
-                0x0000702a        0x4 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(mulsf3.o)
-                0x0000702a                __mulsf3
+                0x000071e6        0x4 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(mulsf3.o)
+                0x000071e6                __mulsf3
  .text.avr-libc.fplib
-                0x0000702e       0xc2 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(mulsf3x.o)
-                0x00007042                __mulsf3x
-                0x00007046                __mulsf3_pse
+                0x000071ea       0xc2 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(mulsf3x.o)
+                0x000071fe                __mulsf3x
+                0x00007202                __mulsf3_pse
  .text.avr-libc.fplib
-                0x000070f0        0xc d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(sin.o)
-                0x000070f0                sin
+                0x000072ac        0xc d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(sin.o)
+                0x000072ac                sin
  .text.avr-libc.fplib
-                0x000070fc       0x84 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(sqrt.o)
-                0x00007104                sqrt
+                0x000072b8       0x84 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(sqrt.o)
+                0x000072c0                sqrt
  .text.avr-libc.fplib
-                0x00007180        0x6 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(square.o)
-                0x00007180                square
+                0x0000733c        0x6 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(square.o)
+                0x0000733c                square
  .text.avr-libc.fplib
-                0x00007186       0x1c d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_mpack.o)
-                0x00007186                __fp_mpack
-                0x0000718a                __fp_mpack_finite
+                0x00007342       0x1c d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_mpack.o)
+                0x00007342                __fp_mpack
+                0x00007346                __fp_mpack_finite
  .text.avr-libc.fplib
-                0x000071a2        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_norm2.o)
-                0x000071a2                __fp_norm2
+                0x0000735e        0xe d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_norm2.o)
+                0x0000735e                __fp_norm2
  .text.avr-libc.fplib
-                0x000071b0       0x22 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_powsodd.o)
-                0x000071b0                __fp_powsodd
+                0x0000736c       0x22 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7\libm.a(fp_powsodd.o)
+                0x0000736c                __fp_powsodd
  .text.libgcc.mul
-                0x000071d2       0x1e d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_mulsi3.o)
-                0x000071d2                __mulsi3
+                0x0000738e       0x1e d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_mulsi3.o)
+                0x0000738e                __mulsi3
  .text.libgcc.div
-                0x000071f0       0x26 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_divmodhi4.o)
-                0x000071f0                _div
-                0x000071f0                __divmodhi4
+                0x000073ac       0x26 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_divmodhi4.o)
+                0x000073ac                _div
+                0x000073ac                __divmodhi4
  .text.libgcc.div
-                0x00007216       0x44 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_udivmodsi4.o)
-                0x00007216                __udivmodsi4
+                0x000073d2       0x44 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_udivmodsi4.o)
+                0x000073d2                __udivmodsi4
  .text.libgcc.div
-                0x0000725a       0x36 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_divmodsi4.o)
-                0x0000725a                __divmodsi4
+                0x00007416       0x36 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_divmodsi4.o)
+                0x00007416                __divmodsi4
  .text.libgcc.mul
-                0x00007290       0x14 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_muluhisi3.o)
-                0x00007290                __muluhisi3
+                0x0000744c       0x14 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_muluhisi3.o)
+                0x0000744c                __muluhisi3
  .text.libgcc.mul
-                0x000072a4        0xc d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_mulshisi3.o)
-                0x000072a4                __mulshisi3
-                0x000072a8                __mulohisi3
+                0x00007460        0xc d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_mulshisi3.o)
+                0x00007460                __mulshisi3
+                0x00007464                __mulohisi3
  .text.libgcc.div
-                0x000072b0       0x28 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_udivmodhi4.o)
-                0x000072b0                __udivmodhi4
+                0x0000746c       0x28 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_udivmodhi4.o)
+                0x0000746c                __udivmodhi4
  .text.libgcc.mul
-                0x000072d8       0x18 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_umulhisi3.o)
-                0x000072d8                __umulhisi3
-                0x000072f0                . = ALIGN (0x2)
+                0x00007494       0x18 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_umulhisi3.o)
+                0x00007494                __umulhisi3
+                0x000074ac                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000072f0        0x0 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_exit.o)
-                0x000072f0                _exit
-                0x000072f0                exit
+ .fini9         0x000074ac        0x0 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_exit.o)
+                0x000074ac                _exit
+                0x000074ac                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1141,11 +1147,11 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000072f0        0x4 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_exit.o)
+ .fini0         0x000074ac        0x4 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avrxmega7\libgcc.a(_exit.o)
  *(.fini0)
-                0x000072f4                _etext = .
+                0x000074b0                _etext = .
 
-.data           0x00802000        0x8 load address 0x000072f4
+.data           0x00802000       0x10 load address 0x000074b0
                 0x00802000                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00802000        0x0 d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avrxmega7/crtx128a1.o
@@ -1216,161 +1222,162 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
                 0x00802006                stigao_flag
  *(.rodata)
  *(.rodata*)
+ .rodata.str1.1
+                0x00802007        0x9 X-Drive_Odometry.o
  *(.gnu.linkonce.d*)
-                0x00802008                . = ALIGN (0x2)
- *fill*         0x00802007        0x1 
-                0x00802008                _edata = .
-                0x00802008                PROVIDE (__data_end, .)
+                0x00802010                . = ALIGN (0x2)
+                0x00802010                _edata = .
+                0x00802010                PROVIDE (__data_end, .)
 
-.bss            0x00802008     0x1285
-                0x00802008                PROVIDE (__bss_start, .)
+.bss            0x00802010     0x1285
+                0x00802010                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.Rac_tren_poz_sample_counter
-                0x00802008        0x1 mechanism.o
-                0x00802008                Rac_tren_poz_sample_counter
- .bss.step1     0x00802009        0x1 testiranje.o
- .bss.flag1     0x0080200a        0x1 testiranje.o
+                0x00802010        0x1 mechanism.o
+                0x00802010                Rac_tren_poz_sample_counter
+ .bss.step1     0x00802011        0x1 testiranje.o
+ .bss.flag1     0x00802012        0x1 testiranje.o
  *(COMMON)
- COMMON         0x0080200b      0x495 hardware.o
-                0x0080200b                USART_E1_data
-                0x00802192                USART_C0_data
-                0x00802319                USART_E0_data
- COMMON         0x008024a0      0xded mechanism.o
-                0x008024a0                sample_L16
-                0x008024a2                Kd_teta
-                0x008024a6                PID_brzina_pret_L
-                0x008024a8                Ki_teta
-                0x008024ac                sysvrem
-                0x008024ae                X_cilj
-                0x008024b2                modifikovana_zeljena_pravolinijska_brzina
-                0x008024b4                translacija
-                0x008024b8                Ki_brzina
-                0x008024bc                adresa_niz_2
-                0x008024c0                sample_R16
-                0x008024c2                Ie_brzina_R
-                0x008024c4                sys_time
-                0x008024c6                niz_counter_niz_3
-                0x008024c7                struja_L
-                0x008024c8                krug45
-                0x008024cc                teta_cilj
-                0x008024d0                Accel_PID_pos
-                0x008024d2                velicina_niz_3
-                0x008024d3                metar
-                0x008024d7                niz_3
-                0x008028bf                Kd_pravolinijski
-                0x008028c3                broj10000
-                0x008028c5                rel_distanca
-                0x008028c9                De_brzina_R
-                0x008028cb                PID_pozicija_pret
-                0x008028cf                krug180
-                0x008028d3                Kp_brzina
-                0x008028d7                broj1000
-                0x008028d9                PID_ukupni_L
-                0x008028dd                sendArray
-                0x0080295d                RX_i_E1
-                0x0080295e                smer_zadati
-                0x0080295f                sample_counter_niz_3
-                0x00802960                vrednost_prom
-                0x00802964                vreme_cekanja_tete
-                0x00802966                adresa_long
-                0x0080296a                Kp_pravolinijski
-                0x0080296e                receiveArray
-                0x008029ee                last_count_R
-                0x008029f2                translacija_10ms
-                0x008029f4                stop_PID_desni
-                0x008029f5                struja_R
-                0x008029f6                motor_count_R
-                0x008029f8                fsm_timer
-                0x008029fa                adresa_niz_1
-                0x008029fe                PID_pozicija
-                0x00802a02                Y_pos
-                0x00802a06                niz_1
-                0x00802dee                teta_greska_prethodno
-                0x00802df2                stop_PID_levi
-                0x00802df3                dif_error_pravolinijski
-                0x00802df7                PASIVNI_QDEC_OWF_R
-                0x00802df8                MOTOR_QDEC_OWF_L
-                0x00802df9                sample_counter_niz_2
-                0x00802dfa                niz_counter_niz_2
-                0x00802dfb                proveri_vreme_primanja
-                0x00802dfc                Kp_teta_pravolinijski
-                0x00802e00                scale_factor_for_mm
-                0x00802e02                pozicija_greska_sum
-                0x00802e06                Pe_brzina_R
-                0x00802e08                broj
-                0x00802e0a                CHC
-                0x00802e0b                Y_cilj
-                0x00802e0f                max_brzina_motora
-                0x00802e11                sample_time_niz_3
-                0x00802e12                rastojanje_cilj_temp
-                0x00802e16                rel_ugao
-                0x00802e1a                Pasivni_desni_CNT
-                0x00802e1e                count_R
-                0x00802e22                PASIVNI_QDEC_OWF_L
-                0x00802e23                X_pos
-                0x00802e27                teta_greska_sum
-                0x00802e2b                PID_brzina_pret_R
-                0x00802e2d                last_count_L
-                0x00802e2f                rezervni_ugao
-                0x00802e31                X_cilj_stari
-                0x00802e35                timeout
-                0x00802e37                broj100
-                0x00802e39                motor_count_L
-                0x00802e3b                dif_error_ugao
-                0x00802e3f                RX_i_C0
-                0x00802e40                adresa_niz_3
-                0x00802e44                broj1
-                0x00802e46                pozicija_pret_greska
-                0x00802e4a                motor_sample_L16
-                0x00802e4c                pozicija_greska
-                0x00802e50                Kd_brzina
-                0x00802e54                PID_teta
-                0x00802e58                sample_counter_niz_1
-                0x00802e59                niz_counter_niz_1
-                0x00802e5a                offset
-                0x00802e5b                RX_i_E0
-                0x00802e5c                vreme_pozicioniranja
-                0x00802e5e                PWM_perioda
-                0x00802e60                velicina_niz_2
-                0x00802e61                zeljena_brzina_okretanja
-                0x00802e63                motor_sample_R16
-                0x00802e65                Kp_teta_okretanje
-                0x00802e69                rastojanje_cilj
-                0x00802e6d                MOTOR_QDEC_OWF_R
-                0x00802e6e                De_brzina_L
-                0x00802e70                Y_cilj_stari
-                0x00802e74                teta_greska
-                0x00802e78                smer_trenutni
-                0x00802e79                PID_brzina_R
-                0x00802e7b                PID_brzina_L
-                0x00802e7d                sample_time_niz_2
-                0x00802e7e                krug90
-                0x00802e82                Pe_brzina_L
-                0x00802e84                PID_ukupni_R
-                0x00802e88                Ie_brzina_L
-                0x00802e8a                niz_2
-                0x00803272                sample_time_niz_1
-                0x00803273                broj10
-                0x00803275                krug360
-                0x00803279                Ki_pravolinijski
-                0x0080327d                count_L
-                0x0080327f                zeljena_pravolinijska_brzina
-                0x00803281                set_direct_out
-                0x00803282                velicina_niz_1
-                0x00803283                teta
-                0x00803287                rotacija_10ms
-                0x00803289                Kp_teta
-                0x0080328d                PROVIDE (__bss_end, .)
-                0x000072f4                __data_load_start = LOADADDR (.data)
-                0x000072fc                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00802013      0x495 hardware.o
+                0x00802013                USART_E1_data
+                0x0080219a                USART_C0_data
+                0x00802321                USART_E0_data
+ COMMON         0x008024a8      0xded mechanism.o
+                0x008024a8                sample_L16
+                0x008024aa                Kd_teta
+                0x008024ae                PID_brzina_pret_L
+                0x008024b0                Ki_teta
+                0x008024b4                sysvrem
+                0x008024b6                X_cilj
+                0x008024ba                modifikovana_zeljena_pravolinijska_brzina
+                0x008024bc                translacija
+                0x008024c0                Ki_brzina
+                0x008024c4                adresa_niz_2
+                0x008024c8                sample_R16
+                0x008024ca                Ie_brzina_R
+                0x008024cc                sys_time
+                0x008024ce                niz_counter_niz_3
+                0x008024cf                struja_L
+                0x008024d0                krug45
+                0x008024d4                teta_cilj
+                0x008024d8                Accel_PID_pos
+                0x008024da                velicina_niz_3
+                0x008024db                metar
+                0x008024df                niz_3
+                0x008028c7                Kd_pravolinijski
+                0x008028cb                broj10000
+                0x008028cd                rel_distanca
+                0x008028d1                De_brzina_R
+                0x008028d3                PID_pozicija_pret
+                0x008028d7                krug180
+                0x008028db                Kp_brzina
+                0x008028df                broj1000
+                0x008028e1                PID_ukupni_L
+                0x008028e5                sendArray
+                0x00802965                RX_i_E1
+                0x00802966                smer_zadati
+                0x00802967                sample_counter_niz_3
+                0x00802968                vrednost_prom
+                0x0080296c                vreme_cekanja_tete
+                0x0080296e                adresa_long
+                0x00802972                Kp_pravolinijski
+                0x00802976                receiveArray
+                0x008029f6                last_count_R
+                0x008029fa                translacija_10ms
+                0x008029fc                stop_PID_desni
+                0x008029fd                struja_R
+                0x008029fe                motor_count_R
+                0x00802a00                fsm_timer
+                0x00802a02                adresa_niz_1
+                0x00802a06                PID_pozicija
+                0x00802a0a                Y_pos
+                0x00802a0e                niz_1
+                0x00802df6                teta_greska_prethodno
+                0x00802dfa                stop_PID_levi
+                0x00802dfb                dif_error_pravolinijski
+                0x00802dff                PASIVNI_QDEC_OWF_R
+                0x00802e00                MOTOR_QDEC_OWF_L
+                0x00802e01                sample_counter_niz_2
+                0x00802e02                niz_counter_niz_2
+                0x00802e03                proveri_vreme_primanja
+                0x00802e04                Kp_teta_pravolinijski
+                0x00802e08                scale_factor_for_mm
+                0x00802e0a                pozicija_greska_sum
+                0x00802e0e                Pe_brzina_R
+                0x00802e10                broj
+                0x00802e12                CHC
+                0x00802e13                Y_cilj
+                0x00802e17                max_brzina_motora
+                0x00802e19                sample_time_niz_3
+                0x00802e1a                rastojanje_cilj_temp
+                0x00802e1e                rel_ugao
+                0x00802e22                Pasivni_desni_CNT
+                0x00802e26                count_R
+                0x00802e2a                PASIVNI_QDEC_OWF_L
+                0x00802e2b                X_pos
+                0x00802e2f                teta_greska_sum
+                0x00802e33                PID_brzina_pret_R
+                0x00802e35                last_count_L
+                0x00802e37                rezervni_ugao
+                0x00802e39                X_cilj_stari
+                0x00802e3d                timeout
+                0x00802e3f                broj100
+                0x00802e41                motor_count_L
+                0x00802e43                dif_error_ugao
+                0x00802e47                RX_i_C0
+                0x00802e48                adresa_niz_3
+                0x00802e4c                broj1
+                0x00802e4e                pozicija_pret_greska
+                0x00802e52                motor_sample_L16
+                0x00802e54                pozicija_greska
+                0x00802e58                Kd_brzina
+                0x00802e5c                PID_teta
+                0x00802e60                sample_counter_niz_1
+                0x00802e61                niz_counter_niz_1
+                0x00802e62                offset
+                0x00802e63                RX_i_E0
+                0x00802e64                vreme_pozicioniranja
+                0x00802e66                PWM_perioda
+                0x00802e68                velicina_niz_2
+                0x00802e69                zeljena_brzina_okretanja
+                0x00802e6b                motor_sample_R16
+                0x00802e6d                Kp_teta_okretanje
+                0x00802e71                rastojanje_cilj
+                0x00802e75                MOTOR_QDEC_OWF_R
+                0x00802e76                De_brzina_L
+                0x00802e78                Y_cilj_stari
+                0x00802e7c                teta_greska
+                0x00802e80                smer_trenutni
+                0x00802e81                PID_brzina_R
+                0x00802e83                PID_brzina_L
+                0x00802e85                sample_time_niz_2
+                0x00802e86                krug90
+                0x00802e8a                Pe_brzina_L
+                0x00802e8c                PID_ukupni_R
+                0x00802e90                Ie_brzina_L
+                0x00802e92                niz_2
+                0x0080327a                sample_time_niz_1
+                0x0080327b                broj10
+                0x0080327d                krug360
+                0x00803281                Ki_pravolinijski
+                0x00803285                count_L
+                0x00803287                zeljena_pravolinijska_brzina
+                0x00803289                set_direct_out
+                0x0080328a                velicina_niz_1
+                0x0080328b                teta
+                0x0080328f                rotacija_10ms
+                0x00803291                Kp_teta
+                0x00803295                PROVIDE (__bss_end, .)
+                0x000074b0                __data_load_start = LOADADDR (.data)
+                0x000074c0                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080328d        0x0
-                0x0080328d                PROVIDE (__noinit_start, .)
+.noinit         0x00803295        0x0
+                0x00803295                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x0080328d                PROVIDE (__noinit_end, .)
-                0x0080328d                _end = .
-                0x0080328d                PROVIDE (__heap_start, .)
+                0x00803295                PROVIDE (__noinit_end, .)
+                0x00803295                _end = .
+                0x00803295                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -1500,7 +1507,7 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x3c0
+.debug_aranges  0x00000000      0x3d0
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x58 adc_driver.o
@@ -1509,92 +1516,92 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
  .debug_aranges
                 0x000000c0       0x68 interrupt.o
  .debug_aranges
-                0x00000128       0x48 mechanism.o
+                0x00000128       0x50 mechanism.o
  .debug_aranges
-                0x00000170       0x50 port_driver.o
+                0x00000178       0x50 port_driver.o
  .debug_aranges
-                0x000001c0       0xc8 TC_driver.o
+                0x000001c8       0xc8 TC_driver.o
  .debug_aranges
-                0x00000288       0xb0 testiranje.o
+                0x00000290       0xb8 testiranje.o
  .debug_aranges
-                0x00000338       0x68 usart_driver.o
+                0x00000348       0x68 usart_driver.o
  .debug_aranges
-                0x000003a0       0x20 X-Drive_Odometry.o
+                0x000003b0       0x20 X-Drive_Odometry.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0xa410
+.debug_info     0x00000000     0xa7da
  *(.debug_info)
  .debug_info    0x00000000      0x9bb adc_driver.o
  .debug_info    0x000009bb     0x1dce hardware.o
  .debug_info    0x00002789     0x2402 interrupt.o
- .debug_info    0x00004b8b     0x1a72 mechanism.o
- .debug_info    0x000065fd      0x716 port_driver.o
- .debug_info    0x00006d13     0x12fd TC_driver.o
- .debug_info    0x00008010     0x1982 testiranje.o
- .debug_info    0x00009992      0x590 usart_driver.o
- .debug_info    0x00009f22      0x4ee X-Drive_Odometry.o
+ .debug_info    0x00004b8b     0x1a59 mechanism.o
+ .debug_info    0x000065e4      0x716 port_driver.o
+ .debug_info    0x00006cfa     0x12fd TC_driver.o
+ .debug_info    0x00007ff7     0x1c1f testiranje.o
+ .debug_info    0x00009c16      0x590 usart_driver.o
+ .debug_info    0x0000a1a6      0x634 X-Drive_Odometry.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev   0x00000000     0x120e
+.debug_abbrev   0x00000000     0x1310
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x235 adc_driver.o
  .debug_abbrev  0x00000235      0x23b hardware.o
  .debug_abbrev  0x00000470      0x2a7 interrupt.o
- .debug_abbrev  0x00000717      0x256 mechanism.o
- .debug_abbrev  0x0000096d      0x132 port_driver.o
- .debug_abbrev  0x00000a9f      0x176 TC_driver.o
- .debug_abbrev  0x00000c15      0x2d9 testiranje.o
- .debug_abbrev  0x00000eee      0x1d6 usart_driver.o
- .debug_abbrev  0x000010c4      0x14a X-Drive_Odometry.o
+ .debug_abbrev  0x00000717      0x265 mechanism.o
+ .debug_abbrev  0x0000097c      0x132 port_driver.o
+ .debug_abbrev  0x00000aae      0x176 TC_driver.o
+ .debug_abbrev  0x00000c24      0x2fc testiranje.o
+ .debug_abbrev  0x00000f20      0x1d6 usart_driver.o
+ .debug_abbrev  0x000010f6      0x21a X-Drive_Odometry.o
 
-.debug_line     0x00000000     0x3d3c
+.debug_line     0x00000000     0x3fd3
  *(.debug_line)
  .debug_line    0x00000000      0x393 adc_driver.o
  .debug_line    0x00000393      0x4f4 hardware.o
  .debug_line    0x00000887     0x1988 interrupt.o
- .debug_line    0x0000220f      0x70a mechanism.o
- .debug_line    0x00002919      0x268 port_driver.o
- .debug_line    0x00002b81      0x39a TC_driver.o
- .debug_line    0x00002f1b      0x852 testiranje.o
- .debug_line    0x0000376d      0x371 usart_driver.o
- .debug_line    0x00003ade      0x25e X-Drive_Odometry.o
+ .debug_line    0x0000220f      0x733 mechanism.o
+ .debug_line    0x00002942      0x268 port_driver.o
+ .debug_line    0x00002baa      0x39a TC_driver.o
+ .debug_line    0x00002f44      0x9d8 testiranje.o
+ .debug_line    0x0000391c      0x371 usart_driver.o
+ .debug_line    0x00003c8d      0x346 X-Drive_Odometry.o
 
-.debug_frame    0x00000000      0xd44
+.debug_frame    0x00000000      0xd78
  *(.debug_frame)
  .debug_frame   0x00000000       0xac adc_driver.o
  .debug_frame   0x000000ac       0xf8 hardware.o
  .debug_frame   0x000001a4      0x428 interrupt.o
- .debug_frame   0x000005cc      0x200 mechanism.o
- .debug_frame   0x000007cc       0x90 port_driver.o
- .debug_frame   0x0000085c      0x174 TC_driver.o
- .debug_frame   0x000009d0      0x280 testiranje.o
- .debug_frame   0x00000c50       0xd0 usart_driver.o
- .debug_frame   0x00000d20       0x24 X-Drive_Odometry.o
+ .debug_frame   0x000005cc      0x210 mechanism.o
+ .debug_frame   0x000007dc       0x90 port_driver.o
+ .debug_frame   0x0000086c      0x174 TC_driver.o
+ .debug_frame   0x000009e0      0x2a4 testiranje.o
+ .debug_frame   0x00000c84       0xd0 usart_driver.o
+ .debug_frame   0x00000d54       0x24 X-Drive_Odometry.o
 
-.debug_str      0x00000000     0x3056
+.debug_str      0x00000000     0x3018
  *(.debug_str)
- .debug_str     0x00000000      0xaaf adc_driver.o
-                                0xafe (size before relaxing)
- .debug_str     0x00000aaf      0xe4b hardware.o
-                               0x15b8 (size before relaxing)
- .debug_str     0x000018fa      0x431 interrupt.o
-                                0xc20 (size before relaxing)
- .debug_str     0x00001d2b      0x30c mechanism.o
-                                0xe36 (size before relaxing)
- .debug_str     0x00002037      0x80b port_driver.o
-                                0xba8 (size before relaxing)
- .debug_str     0x00002842      0x575 TC_driver.o
-                                0xbdb (size before relaxing)
- .debug_str     0x00002db7      0x121 testiranje.o
-                                0x86d (size before relaxing)
- .debug_str     0x00002ed8      0x104 usart_driver.o
-                                0x3d4 (size before relaxing)
- .debug_str     0x00002fdc       0x7a X-Drive_Odometry.o
-                                0x485 (size before relaxing)
+ .debug_str     0x00000000      0xa8f adc_driver.o
+                                0xade (size before relaxing)
+ .debug_str     0x00000a8f      0xe4b hardware.o
+                               0x1598 (size before relaxing)
+ .debug_str     0x000018da      0x431 interrupt.o
+                                0xc00 (size before relaxing)
+ .debug_str     0x00001d0b      0x314 mechanism.o
+                                0xe1e (size before relaxing)
+ .debug_str     0x0000201f      0x80b port_driver.o
+                                0xb88 (size before relaxing)
+ .debug_str     0x0000282a      0x575 TC_driver.o
+                                0xbbb (size before relaxing)
+ .debug_str     0x00002d9f      0x131 testiranje.o
+                                0x879 (size before relaxing)
+ .debug_str     0x00002ed0      0x104 usart_driver.o
+                                0x3b4 (size before relaxing)
+ .debug_str     0x00002fd4       0x44 X-Drive_Odometry.o
+                                0x506 (size before relaxing)
 
-.debug_loc      0x00000000     0x2ca6
+.debug_loc      0x00000000     0x2d63
  *(.debug_loc)
  .debug_loc     0x00000000      0x1fb adc_driver.o
  .debug_loc     0x000001fb       0xf0 hardware.o
@@ -1602,9 +1609,9 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
  .debug_loc     0x0000150c      0x551 mechanism.o
  .debug_loc     0x00001a5d      0x1f8 port_driver.o
  .debug_loc     0x00001c55      0x378 TC_driver.o
- .debug_loc     0x00001fcd      0x8b6 testiranje.o
- .debug_loc     0x00002883      0x40f usart_driver.o
- .debug_loc     0x00002c92       0x14 X-Drive_Odometry.o
+ .debug_loc     0x00001fcd      0x92b testiranje.o
+ .debug_loc     0x000028f8      0x40f usart_driver.o
+ .debug_loc     0x00002d07       0x5c X-Drive_Odometry.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -1612,17 +1619,17 @@ LOAD d:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x330
+.debug_ranges   0x00000000      0x340
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x48 adc_driver.o
  .debug_ranges  0x00000048       0x58 hardware.o
  .debug_ranges  0x000000a0       0x58 interrupt.o
- .debug_ranges  0x000000f8       0x38 mechanism.o
- .debug_ranges  0x00000130       0x40 port_driver.o
- .debug_ranges  0x00000170       0xb8 TC_driver.o
- .debug_ranges  0x00000228       0xa0 testiranje.o
- .debug_ranges  0x000002c8       0x58 usart_driver.o
- .debug_ranges  0x00000320       0x10 X-Drive_Odometry.o
+ .debug_ranges  0x000000f8       0x40 mechanism.o
+ .debug_ranges  0x00000138       0x40 port_driver.o
+ .debug_ranges  0x00000178       0xb8 TC_driver.o
+ .debug_ranges  0x00000230       0xa8 testiranje.o
+ .debug_ranges  0x000002d8       0x58 usart_driver.o
+ .debug_ranges  0x00000330       0x10 X-Drive_Odometry.o
 
 .debug_macro
  *(.debug_macro)
