@@ -25,6 +25,8 @@ void sendChar(char c);
 void inicijalizuj_servo_tajmer_20ms();
 void pomeri_servo_1(uint16_t deg);
 
+void pun_krug(void);
+void kocka(void);
 void demo_1(void);
 void demo_2(void);
 void demo_3(void);

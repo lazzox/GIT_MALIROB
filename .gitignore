@@ -48,13 +48,13 @@ Temporary Items
 
 # Folderi nepotrebni za uplodovanje koda
 #   ujedno izbrisani radi preglednosti
-.atsuo
-.o
-.d
-.eep
-.srec
-.map
-.lss
-.hex
-.elf
-
+*.atsuo
+*.o
+*.d
+*.eep
+*.srec
+*.map
+*.lss
+*.hex
+*.elf
+.Debug
