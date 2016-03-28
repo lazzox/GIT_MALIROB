@@ -1,7 +1,7 @@
 /*
  * main.c
  *
- * Poslednje_izmene: 27/03/2016 01:47:41
+ * Poslednje_izmene: 28/03/2016 01:47:41
  * Autor: AXIS team 
  
  Izmene:
@@ -110,7 +110,7 @@ int main(void)
 			servo_counter++;
 			Pracenje_Pravca_sample_counter = 0;
 			Pracenje_pravca();
-		}9
+		}
 		
 		//PID regulacija
 		if(PID_pozicioni_sample_counter >= 3){		//3 x 1.5ms = 4.5ms
