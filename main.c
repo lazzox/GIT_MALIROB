@@ -79,6 +79,8 @@ int main(void)
 	nuliraj_poziciju_robota();
 	
 	//Cekaj cinc ovde u while();
+	 //zadaj_teta(-45,2);
+	
 	while(1)
 	{
 		//CHECK PGM MODE - Uvek mora biti ispred svega!
@@ -107,7 +109,6 @@ int main(void)
 		//Korekcija pravca i distance prema cilju
 		if(Pracenje_Pravca_sample_counter >= 30){	//30 x 1.5ms = 45ms
 			msg_counter++;
-			servo_counter++;
 			Pracenje_Pravca_sample_counter = 0;
 			Pracenje_pravca();
 		}
@@ -116,9 +117,10 @@ int main(void)
 		if(PID_pozicioni_sample_counter >= 3){		//3 x 1.5ms = 4.5ms
 			PID_pozicioni_sample_counter = 0;
 			PID_ugaoni();
-			PID_pravolinijski();
-			//PID_brzinski se poziva direktno u interaptu sistemskog tajmera TCE1!
+			if (stigao_flag == 2)
+			{
+			  PID_pravolinijski();
+			}
 		}
-		
 	}//while
 }//main

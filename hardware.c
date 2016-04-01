@@ -23,15 +23,16 @@ void Podesi_Parametre_Robota(void)
 	scale_factor_for_mm = metar / 1000;
 	krug180 = krug360 >> 1;	
 	krug90 =  krug360 >> 2;
-	krug45 =  krug360 >> 3;			
+	krug45 =  krug360 >> 3;
+	krug180_PI = krug180 / M_PI;			
 
 	smer_zadati = 1;						//1-napred, 2-nazad, 0-sam bira smer
-	zeljena_pravolinijska_brzina = 450;		//brzina kojom se pravo krece robot
-	zeljena_brzina_okretanja = 300; //brzina kojom se okrece robot
+	zeljena_pravolinijska_brzina = 500;		//brzina kojom se pravo krece robot
+	zeljena_brzina_okretanja = 200; //brzina kojom se okrece robot
 	max_brzina_motora = 800;				//eksperimentalno utvrdjena max brzina motora [impuls/vreme_odabiranja(3ms)] (max je oko 1000)
 	
 	modifikovana_zeljena_pravolinijska_brzina = zeljena_pravolinijska_brzina;
-	rezervni_ugao = krug45;		//vrednost ugaone greske preko koje se radi reorijentacija robota  
+	rezervni_ugao = krug45/45;		//vrednost ugaone greske preko koje se radi reorijentacija robota  
 	PWM_perioda = 800;			//PWM tajmer broji do 800 - frekvenicja 20KHz
 }
 
@@ -39,9 +40,9 @@ void Podesi_PID_Pojacanja(void)
 {
 	//PID parametri
 	//Regulacija pravolinijskog kretanja
-	Kp_pravolinijski = 5;			//6		2.5
+	Kp_pravolinijski = 3.5;			//6		2.5
 	Ki_pravolinijski = 0;			//1.6	3
-	Kd_pravolinijski = 330;		//30		60
+	Kd_pravolinijski = 30;		//30		60
 	Kp_teta_pravolinijski = 20;
 		
 	//Regulacija ugaonog zakretanja

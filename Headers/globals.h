@@ -43,6 +43,7 @@ stop_PID_desni,
 set_direct_out,
 smer_zadati,
 stigao_flag,
+stigao_flag0, //flag_za_cepanje komandi
 struja_L,
 struja_R,
 //komunikacija
@@ -150,6 +151,7 @@ translacija,
 teta,
 teta_cilj,
 teta_cilj_final,
+teta_last_value,
 teta_greska,
 teta_greska_prethodno,
 teta_greska_sum,
@@ -171,6 +173,7 @@ metar,
 krug45,
 krug90,
 krug180,
+krug180_PI,
 krug360;
 							
 #endif /* GLOBALS_H_ */
