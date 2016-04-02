@@ -341,12 +341,6 @@ void PID_pravolinijski(void)
 					(float)(dif_error_pravolinijski*Kd_pravolinijski) + 
 					(float)(pozicija_greska_sum*Ki_pravolinijski)) / 
 					((float)((metar >> 1) / zeljena_pravolinijska_brzina));	
-
-	//ogranicenje
-	//if(PID_pozicija < -modifikovana_zeljena_pravolinijska_brzina)
-		//PID_pozicija = -modifikovana_zeljena_pravolinijska_brzina;
-	//if(PID_pozicija > modifikovana_zeljena_pravolinijska_brzina)
-		//PID_pozicija = modifikovana_zeljena_pravolinijska_brzina;
 		
 	if(PID_pozicija < -zeljena_pravolinijska_brzina)
 		PID_pozicija = -zeljena_pravolinijska_brzina;
