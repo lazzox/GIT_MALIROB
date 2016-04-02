@@ -37,6 +37,7 @@ stop_PID_desni,
 set_direct_out,
 smer_zadati,
 stigao_flag = 1,
+stigao_flag0 = 1,
 struja_L,
 struja_R,
 //komunikacija
@@ -165,6 +166,7 @@ metar,
 krug45,
 krug90,
 krug180,
+krug180_PI,
 krug360;
 
 
@@ -233,8 +235,8 @@ void Racunanje_trenutne_pozicije(void)
 	
 	//racunanje pozicije
 	double X_pos_cos, Y_pos_sin;
-	X_pos_cos = cos(((double)teta / krug180) * M_PI);
-	Y_pos_sin = sin(((double)teta / krug180) * M_PI);
+	X_pos_cos = cos((double)teta /  krug180_PI); /// X_pos_cos = cos(((double)teta / krug180) * M_PI);   M_PI/krug180
+	Y_pos_sin = sin((double)teta / krug180_PI); //Y_pos_sin = sin(((double)teta / krug180) * M_PI);
 	X_pos += (int)(((double)translacija_10ms * X_pos_cos));
 	Y_pos += (int)(((double)translacija_10ms * Y_pos_sin));
 }
@@ -248,8 +250,8 @@ void Pracenje_pravca(void)
 	//ako stignu nove zadate koordinate
 	if (X_cilj_stari != X_cilj || Y_cilj_stari != Y_cilj)	
 	{
-		rezervni_ugao = krug45;	//precizno se pozicioniramo u mestu
-		stigao_flag = 0;
+		rezervni_ugao = krug45/45;	//precizno se pozicioniramo u mestu
+		stigao_flag0 = 0;
 	}
 	X_cilj_stari = X_cilj;
 	Y_cilj_stari = Y_cilj;
@@ -267,16 +269,16 @@ void Pracenje_pravca(void)
 		rastojanje_cilj = rastojanje_cilj_temp;
 		translacija = 0;
 		vreme_pozicioniranja = 0;
-		stigao_flag = 0;
+		stigao_flag0 = 0;
 		
 		X_razlika = (X_cilj - X_pos);
 		Y_razlika = (Y_cilj - Y_pos);
 		teta_cilj_radian = atan2((double)(Y_razlika), (double)(X_razlika));
 		
-		teta_cilj = (signed long)((teta_cilj_radian * krug180) / M_PI);
+		teta_cilj = (signed long)(teta_cilj_radian * krug180_PI);  //!skrati
 		
 		//Za automatsko kontanje rikverca po uglu
-		if((smer_zadati) == 0)	//Sam bira smer
+		if(smer_zadati == 0)	//Sam bira smer
 		{
 			teta_razlika = teta - teta_cilj;
 			if(teta_razlika > (krug90) || teta_razlika < (-krug90))
@@ -302,18 +304,16 @@ void Pracenje_pravca(void)
 		if(teta_cilj < 0)
 			teta_cilj += krug360;
 	}
-	else if (vreme_pozicioniranja >= 600)	//stigli smo do cilja		/bilo 300
+	else if (vreme_pozicioniranja >= 300)	//stigli smo do cilja		/bilo 300
 	{
-		if (stigao_flag == 0)
+		if (stigao_flag0 == 0)
 		{
-			stigao_flag = 1;
+			stigao_flag0 = 1;
+			stigao_flag = 0;
 			
-//  			USART_TXBuffer_PutByte(&USART_E0_data, 75);	//O
-//  			USART_TXBuffer_PutByte(&USART_E0_data, 75);	//K
-//  			USART_TXBuffer_PutByte(&USART_E0_data, 33);	//!
-//  			USART_TXBuffer_PutByte(&USART_E1_data, 79);	//O
-//  			USART_TXBuffer_PutByte(&USART_E1_data, 75);	//K
-//  			USART_TXBuffer_PutByte(&USART_E1_data, 33);	//!
+  		//	USART_TXBuffer_PutByte(&USART_E0_data, 'O');	//O
+  		//	USART_TXBuffer_PutByte(&USART_E0_data, 'K');	//K
+ 		//	USART_TXBuffer_PutByte(&USART_E0_data, '!');	//!
 		}
 		
 		if (teta_cilj_final != 0xFFFFFFFF)	//ako treba zauzmemo krajnji ugao
@@ -396,16 +396,17 @@ void PID_ugaoni(void)
 		teta_greska_sum = -200;
 	
 	//podesavanje pravca robota dok ne stigne u blizinu cilja
-	if(rastojanje_cilj_temp > metar/10)  /// bilo /10 ? 
+	if(rastojanje_cilj_temp > metar/30)  /// bilo /10 ? 
 	{
 		if(labs(teta_greska) > rezervni_ugao)	//okrecemo se u mestu kad treba
 		{
 			modifikovana_zeljena_pravolinijska_brzina = 0;	//zaustavlja se robot za okretanje u mestu
-			rezervni_ugao = krug45;
+			rezervni_ugao = krug45/45;
 			vreme_cekanja_tete = 0;
 		}
-		else if(vreme_cekanja_tete >= 300)
+		else if(vreme_cekanja_tete >=300)
 		{
+			stigao_flag = 2;
 			vreme_cekanja_tete = 0;
 			modifikovana_zeljena_pravolinijska_brzina = zeljena_pravolinijska_brzina;
 			Kp_teta=Kp_teta_pravolinijski;

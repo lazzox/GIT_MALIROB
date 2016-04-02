@@ -1,7 +1,7 @@
 /*
  * main.c
  *
- * Poslednje_izmene: 27/03/2016 01:47:41
+ * Poslednje_izmene: 28/03/2016 01:47:41
  * Autor: AXIS team 
  
  Izmene:
@@ -14,6 +14,7 @@
  -Izbacena inicijalizacija bluetooth-a
  -PID I i D dejstvo kao da nemaju uticaja na kretanje :)
  -PID apdejtovan
+ -Izmenjen baudrate za displej sa 9600 na 125000
  
  
  Potrebne izmene:
@@ -54,6 +55,8 @@ PID_teta;
 volatile float
 sharp1_value;
 
+volatile unsigned int PRG_flag = 0;
+
 int main(void)
 {
 	int msg_counter = 0;
@@ -69,20 +72,35 @@ int main(void)
 	Podesi_Interapt();					//podesavanje interapt prioriteta
 	Podesi_Pinove();					//podesavanje I/O pinova
 	Podesi_USART_Komunikaciju();		//podesavanje komunikacije
-	//Trebalo bi da sve radi i bez ove funkcije iznad, treba je izbrisati!!!
-	
 	//inicijalizuj_servo_tajmer_20ms();
 	//pomeri_servo_1(0);
-	//sendChar('k');
-	//_delay_ms(1000);					//cekanje da se stabilizuje sistem
-	_delay_ms(500);			//mora bar 300 delay zbog delaya u PGM_Mode kojie je 300ms
+
+	_delay_ms(1000);			//mora bar 300 delay zbog delaya u PGM_Mode kojie je 300ms 
 	nuliraj_poziciju_robota();
-	//CheckInputMotorControl();
+	
+	//Cekaj cinc ovde u while();
+	 //zadaj_teta(-45,2);
+	
 	while(1)
 	{
+		//CHECK PGM MODE - Uvek mora biti ispred svega!
+		while(PGM_Mode()){
+			set_direct_out = 1;
+			PID_brzina_L = 0;
+			PID_brzina_R = 0;
+			if (!PRG_flag){
+				sendMsg("PGM_Mode");
+				PRG_flag = 1;
+			}
+			_delay_ms(500);
+		}
+		set_direct_out = PRG_flag = 0;
+		
+		
+		//TAKTIKA
 		kocka();
-		//pravo_nazad();
-		//Racunanje trenutne pozicije
+	
+		//REGULACIJA
 		if (Rac_tren_poz_sample_counter >= 3){		 //3 x 1.5ms = 4.5ms
 			Rac_tren_poz_sample_counter = 0;
 			Racunanje_trenutne_pozicije();
@@ -91,7 +109,6 @@ int main(void)
 		//Korekcija pravca i distance prema cilju
 		if(Pracenje_Pravca_sample_counter >= 30){	//30 x 1.5ms = 45ms
 			msg_counter++;
-			servo_counter++;
 			Pracenje_Pravca_sample_counter = 0;
 			Pracenje_pravca();
 		}
@@ -100,19 +117,10 @@ int main(void)
 		if(PID_pozicioni_sample_counter >= 3){		//3 x 1.5ms = 4.5ms
 			PID_pozicioni_sample_counter = 0;
 			PID_ugaoni();
-			PID_pravolinijski();
-			//PID_brzinski se poziva direktno u interaptu sistemskog tajmera TCE1!
+			if (stigao_flag == 2)
+			{
+			  PID_pravolinijski();
+			}
 		}
-		
-		//PROGRAMMING MODE - kod koji ako je pritisnut CRVENI taster gasi motore
-		while(PGM_Mode() == 1){
-			set_direct_out = 1;
-			PID_brzina_L = 0;
-			PID_brzina_R = 0;
-			sendMsg("VALJEVAC");
-			_delay_ms(300);
-		}
-		set_direct_out = 0;
-		
 	}//while
 }//main
