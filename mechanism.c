@@ -27,7 +27,9 @@ Ki_teta,
 
 Kp_brzina,
 Ki_brzina,
-Kd_brzina;
+Kd_brzina,
+
+flag_krug;
 
 
 volatile unsigned char
@@ -36,13 +38,15 @@ stop_PID_levi,
 stop_PID_desni,
 set_direct_out,
 smer_zadati,
-stigao_flag = 1,
-stigao_flag0 = 1,
+stigao_flag = 0,
+stigao_sigurnosni,
 struja_L,
 struja_R,
 //komunikacija
 sendArray[128],
 receiveArray[128],
+vreme_primanja,
+okay_flag,
 CHC,
 RX_i_E0,
 RX_i_E1,
@@ -91,7 +95,8 @@ scale_factor_for_mm,
 vreme_cekanja_tete,
 vreme_pozicioniranja,
 sys_time,
-Accel_PID_pos;
+Accel_PID_pos,
+meca;
 
 volatile signed int
 broj,
@@ -230,13 +235,13 @@ void Racunanje_trenutne_pozicije(void)
 		teta -= krug360;
 	
 	//ako predje u negativan smer
-	if(teta <= 0)
+	if(teta < 0)
 		teta += krug360;	
 	
 	//racunanje pozicije
 	double X_pos_cos, Y_pos_sin;
-	X_pos_cos = cos((double)teta /  krug180_PI); /// X_pos_cos = cos(((double)teta / krug180) * M_PI);   M_PI/krug180
-	Y_pos_sin = sin((double)teta / krug180_PI); //Y_pos_sin = sin(((double)teta / krug180) * M_PI);
+	X_pos_cos = cos((double)teta / krug180_PI);
+	Y_pos_sin = sin((double)teta / krug180_PI);
 	X_pos += (int)(((double)translacija_10ms * X_pos_cos));
 	Y_pos += (int)(((double)translacija_10ms * Y_pos_sin));
 }
@@ -251,7 +256,7 @@ void Pracenje_pravca(void)
 	if (X_cilj_stari != X_cilj || Y_cilj_stari != Y_cilj)	
 	{
 		rezervni_ugao = krug45/45;	//precizno se pozicioniramo u mestu
-		stigao_flag0 = 0;
+		stigao_flag = 0;
 	}
 	X_cilj_stari = X_cilj;
 	Y_cilj_stari = Y_cilj;
@@ -263,22 +268,22 @@ void Pracenje_pravca(void)
 	XY_zbir = X_razlika + Y_razlika;
 	rastojanje_cilj_temp = sqrt(XY_zbir);
 	
-	//ako je veca preostala distanca veca od 10 cm onda se radi korrekcija
-	if(rastojanje_cilj_temp > (metar / 10))  // metar/12
+	if(rastojanje_cilj_temp > (metar / 15 ))  // metar/12
 	{
 		rastojanje_cilj = rastojanje_cilj_temp;
 		translacija = 0;
 		vreme_pozicioniranja = 0;
-		stigao_flag0 = 0;
+		stigao_flag = 0;
 		
 		X_razlika = (X_cilj - X_pos);
 		Y_razlika = (Y_cilj - Y_pos);
 		teta_cilj_radian = atan2((double)(Y_razlika), (double)(X_razlika));
 		
-		teta_cilj = (signed long)(teta_cilj_radian * krug180_PI);  //!skrati
+		teta_cilj = (signed long)(teta_cilj_radian *krug180_PI);
+	
 		
 		//Za automatsko kontanje rikverca po uglu
-		if(smer_zadati == 0)	//Sam bira smer
+		if((smer_zadati) == 0)	//Sam bira smer
 		{
 			teta_razlika = teta - teta_cilj;
 			if(teta_razlika > (krug90) || teta_razlika < (-krug90))
@@ -299,21 +304,36 @@ void Pracenje_pravca(void)
 		{
 			smer_trenutni = -1; //-1
 			teta_cilj -= krug180;
+			
 		}
 	
 		if(teta_cilj < 0)
 			teta_cilj += krug360;
 	}
-	else if (vreme_pozicioniranja >= 300)	//stigli smo do cilja		/bilo 300
+	else if (vreme_pozicioniranja>800)
 	{
-		if (stigao_flag0 == 0)
+		if (stigao_sigurnosni) 
 		{
-			stigao_flag0 = 1;
-			stigao_flag = 0;
-			
-  		//	USART_TXBuffer_PutByte(&USART_E0_data, 'O');	//O
-  		//	USART_TXBuffer_PutByte(&USART_E0_data, 'K');	//K
- 		//	USART_TXBuffer_PutByte(&USART_E0_data, '!');	//!
+			stigao_sigurnosni=0;
+		}
+	}
+	else if (vreme_pozicioniranja >= 600 && !stigao_sigurnosni)	//stigli smo do cilja
+	{
+		if (stigao_flag == 0 )//&& stigao_sigurnosni)
+		{
+			SendChar_USB('S');
+			SendChar_USB('t');
+			SendChar_USB('t');
+			SendChar_USB('S');
+			stigao_flag = 1;
+			stigao_sigurnosni=0;
+			vreme_pozicioniranja=0;
+//  			USART_TXBuffer_PutByte(&USART_E0_data, 75);	//O
+//  			USART_TXBuffer_PutByte(&USART_E0_data, 75);	//K
+//  			USART_TXBuffer_PutByte(&USART_E0_data, 33);	//!
+//  			USART_TXBuffer_PutByte(&USART_E1_data, 79);	//O
+//  			USART_TXBuffer_PutByte(&USART_E1_data, 75);	//K
+//  			USART_TXBuffer_PutByte(&USART_E1_data, 33);	//!
 		}
 		
 		if (teta_cilj_final != 0xFFFFFFFF)	//ako treba zauzmemo krajnji ugao
@@ -327,25 +347,31 @@ void Pracenje_pravca(void)
 void PID_pravolinijski(void)
 {	
 	pozicija_greska = rastojanje_cilj * smer_trenutni - translacija;
-	dif_error_pravolinijski = PID_pozicija - PID_pozicija_pret;	
+	dif_error_pravolinijski = PID_pozicija - PID_pozicija_pret;
 	pozicija_greska_sum += pozicija_greska;
 	
 	//anti wind-up
-	if(pozicija_greska_sum > 200)
-		pozicija_greska_sum = 200;
-	else if(pozicija_greska_sum < -200)
-		pozicija_greska_sum = -200;
+	if(pozicija_greska_sum > 300)
+		pozicija_greska_sum = 300;
+	else if(pozicija_greska_sum < -300)
+		pozicija_greska_sum = -300;
 	
 	//za 50cm greske se dobija zeljena_pravoliijska_brzina (kada je Kp_pravolinijski = 1)
 	PID_pozicija =	((float)(pozicija_greska*Kp_pravolinijski) + 
 					(float)(dif_error_pravolinijski*Kd_pravolinijski) + 
-					(float)(pozicija_greska_sum*Ki_pravolinijski)) / 
-					((float)((metar >> 1) / zeljena_pravolinijska_brzina));	
+					(float)(pozicija_greska_sum*Ki_pravolinijski)) /
+					((float)((metar>>1 ) / modifikovana_zeljena_pravolinijska_brzina));	
+
+	//ogranicenje
+	if(PID_pozicija < -modifikovana_zeljena_pravolinijska_brzina)
+		PID_pozicija = -modifikovana_zeljena_pravolinijska_brzina;
+	if(PID_pozicija > modifikovana_zeljena_pravolinijska_brzina)
+		PID_pozicija = modifikovana_zeljena_pravolinijska_brzina;
 		
-	if(PID_pozicija < -zeljena_pravolinijska_brzina)
-		PID_pozicija = -zeljena_pravolinijska_brzina;
-	if(PID_pozicija > zeljena_pravolinijska_brzina)
-		PID_pozicija = zeljena_pravolinijska_brzina;
+	//if(PID_pozicija < -zeljena_pravolinijska_brzina)
+		//PID_pozicija = -zeljena_pravolinijska_brzina;
+	//if(PID_pozicija > zeljena_pravolinijska_brzina)
+		//PID_pozicija = zeljena_pravolinijska_brzina;
 		
 		
 	//ubrzavanje po rampi
@@ -390,25 +416,25 @@ void PID_ugaoni(void)
 		teta_greska_sum = -200;
 	
 	//podesavanje pravca robota dok ne stigne u blizinu cilja
-	if(rastojanje_cilj_temp > metar/30)  /// bilo /10 ? 
+	if(rastojanje_cilj_temp > (metar/10))  /// bilo /10 ? 
 	{
-		if(labs(teta_greska) > rezervni_ugao)	//okrecemo se u mestu kad treba
+		if(labs(teta_greska) > 1500)	//okrecemo se u mestu kad treba
 		{
 			modifikovana_zeljena_pravolinijska_brzina = 0;	//zaustavlja se robot za okretanje u mestu
 			rezervni_ugao = krug45/45;
 			vreme_cekanja_tete = 0;
 		}
-		else if(vreme_cekanja_tete >=300)
+		else if(vreme_cekanja_tete >= 300)
 		{
-			stigao_flag = 2;
+			//stigao_flag = 2;
 			vreme_cekanja_tete = 0;
-			modifikovana_zeljena_pravolinijska_brzina = zeljena_pravolinijska_brzina;
-			Kp_teta=Kp_teta_pravolinijski;
+			modifikovana_zeljena_pravolinijska_brzina=zeljena_pravolinijska_brzina;
+			//Kp_teta=Kp_teta_pravolinijski;
 			
 			
 				// robot se krece pravolinijski
 		}
-	}	
+	}
 	
 	//PID izlaz:
 	PID_teta =	((float)(teta_greska * Kp_teta) + 
@@ -480,13 +506,13 @@ void PID_brzinski(void)
 		PID_ukupni_R = -PWM_perioda;
 		
 	//levi motor
-	if (PID_ukupni_L > 10)/*if (PID_ukupni_L > 5)*/	//smer 1
+	if (PID_ukupni_L > 2)/*if (PID_ukupni_L > 5)*/	//smer 1
 	{
 		PORT_ClearPins(&PORTH, 0b00010000);	//IN_A2=0
 		PORT_SetPins(&PORTH, 0b10000000);	//IN_B2=1
 		TCF1.CCBBUF = PID_ukupni_L;
 	}
-	else if (PID_ukupni_L < -10)	//smer 2
+	else if (PID_ukupni_L < -2)	//smer 2
 	{
 		PORT_ClearPins(&PORTH, 0b10000000);	//IN_B2=0
 		PORT_SetPins(&PORTH, 0b00010000);	//IN_A2=1,
@@ -495,13 +521,13 @@ void PID_brzinski(void)
 	else	//kocenje
 		PORT_ClearPins(&PORTH, 0b10010000);	//IN_A2=0, IN_B2=0	
 	//desni motor
-	if (PID_ukupni_R > 10) //smer 1
+	if (PID_ukupni_R > 2) //smer 1
 	{
 		PORT_ClearPins(&PORTH, 0b00001000);	//IN_B1=0
 		PORT_SetPins(&PORTH, 0b00000001);	//IN_A1=1
 		TCF1.CCABUF = PID_ukupni_R;
 	}
-	else if (PID_ukupni_R < -10)	//smer 2
+	else if (PID_ukupni_R < -2)	//smer 2
 	{
 		PORT_ClearPins(&PORTH, 0b00000001);	//IN_A1=0
 		PORT_SetPins(&PORTH, 0b00001000);	//IN_B1=1
@@ -522,5 +548,3 @@ int PGM_Mode(){
 		return 0;
 	}
 }
-
-

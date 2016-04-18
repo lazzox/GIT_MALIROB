@@ -16,6 +16,6 @@ void PID_pravolinijski(void);
 void PID_izlazni(void);
 void Pracenje_pravca(void);
 void Communication(void);
-int PGM_Mode(void);
+int PGM_Mode();
 
 #endif /* MECHANISM_H_ */

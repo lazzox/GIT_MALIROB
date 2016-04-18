@@ -1,29 +1,24 @@
 /*
  * main.c
  *
- * Poslednje_izmene: 28/03/2016 01:47:41
- * Autor: AXIS team 
+ * Poslednje_izmene: 27/03/2016 01:47:41
+ * Autor: AXIS team
  
  Izmene:
- -Namesten baudrate za LCD
  -Dodate funkcije za sendMsg/sendChar
- -Dodata PGM_Mode funkcija dodat taster
- -Uklonjeno checkmotors..() funkcija
- -Proveriti brzinskiPid koji se poziva u interaptu sta se tamo nalazi
- --tamo ne sme biti nikakvih komplikovanih operacija ili definisanja promenljivih
  -Izbacena inicijalizacija bluetooth-a
- -PID I i D dejstvo kao da nemaju uticaja na kretanje :)
- -PID apdejtovan
- -Izmenjen baudrate za displej sa 9600 na 125000
+ -Dodat PGM_Mode funkciju
+ -PID nije najbolji, ali uvek stigne gde treba :)
  
  
- Potrebne izmene:
- -Promeniti baudrate
- -Promeniti funkciju kada robot treba da stigne u tacku koja je iza njega, 
- --ali da se ne krece unazad nego prednjom stranom, trenutno pocne da pravi veliki
- --polukrug i na kraju stigne gde treba, ali bolje je da se prvo okrene za 180 
- --stepeni pa onda da ide pravolinijski.
- -Provaliti kako robot bira u kom smeru ce se okretati
+ 
+ Potrebne izmene: 
+ -Promeniti baudrate (prepisano od malog robota)
+ -Dodati displej :)
+ 
+ # NAUCITE DA DODAJETE POTPIS FUNKCIJE U HEADER FAJLA GDE KREIRATE NOVU FUNKCIJU KAKO BI ONA ISPRAVNO RADILA!!!
+ 
+ 
  
  */ 
 
@@ -48,20 +43,21 @@ Pe_brzina_R,
 Ie_brzina_L,
 Ie_brzina_R;
 
-volatile signed long
-rastojanje_cilj,
-PID_teta;
+volatile unsigned int PRG_flag = 0;
+
+
 
 volatile float
 sharp1_value;
-
-volatile unsigned int PRG_flag = 0;
 
 int main(void)
 {
 	int msg_counter = 0;
 	int servo_counter = 0;
-	//char servo_flag = 0;
+	okay_flag = 0;
+	vreme_primanja = 0;
+	stigao_sigurnosni = 0;
+	
 	Podesi_Oscilator();					//podesavanje oscilatora
 	Podesi_Parametre_Robota();			//podesavanje broja impulsa u krugu
 	Podesi_PID_Pojacanja();				//podesavanje pojacanja PID regulatora
@@ -72,14 +68,25 @@ int main(void)
 	Podesi_Interapt();					//podesavanje interapt prioriteta
 	Podesi_Pinove();					//podesavanje I/O pinova
 	Podesi_USART_Komunikaciju();		//podesavanje komunikacije
-	//inicijalizuj_servo_tajmer_20ms();
-	//pomeri_servo_1(0);
-
-	_delay_ms(1000);			//mora bar 300 delay zbog delaya u PGM_Mode kojie je 300ms 
-	nuliraj_poziciju_robota();
+	//inicijalizuj_servo_tajmer_20ms();	//Inicijalizuje tajmer za servoe
+	//Kada se inicijalizuje ovaj tajmer prestane da radi USART za komunikaciju!
 	
-	//Cekaj cinc ovde u while();
-	 //zadaj_teta(-45,2);
+	_delay_ms(1000);					//cekanje da se stabilizuje sistem
+	nuliraj_poziciju_robota(); 	
+	
+	SendChar_USB('U');
+	SendChar_USB('U');
+	SendChar_USB('U');
+	
+	SendChar_USB(sizeof(int));
+	SendChar_USB(sizeof(long));
+	SendChar_USB(sizeof(double));
+	SendChar_USB(sizeof(long double));
+	SendChar_USB(sizeof(long long));
+	
+	//X_pos=600;
+	//idi_pravo(600,0,0);
+	//zadaj_teta(180,0);
 	
 	while(1)
 	{
@@ -88,39 +95,78 @@ int main(void)
 			set_direct_out = 1;
 			PID_brzina_L = 0;
 			PID_brzina_R = 0;
-			if (!PRG_flag){
-				sendMsg("PGM_Mode");
-				PRG_flag = 1;
-			}
+				if (!PRG_flag){
+					sendMsg("PGM_Mode");
+					PRG_flag = 1;
+				}
 			_delay_ms(500);
 		}
 		set_direct_out = PRG_flag = 0;
 		
-		
-		//TAKTIKA
-		kocka();
-	
-		//REGULACIJA
-		if (Rac_tren_poz_sample_counter >= 3){		 //3 x 1.5ms = 4.5ms
+	//---------------------------------------------------------------------//
+	//------------------------------TAKTIKA--------------------------------//
+	//---------------------------------------------------------------------//
+			//kocka();
+			//proba();
+			
+// 			if(sys_time>200)
+// 			{
+// 				posalji_poziciju();
+// 			}
+	//---------------------------------------------------------------------//
+	//---------------TAKTIKA-----------------------------------------------//
+	//---------------------------------------------------------------------//
+	//---------------Racunanje trenutne pozicije---------------------------//
+		if (Rac_tren_poz_sample_counter >= 3){		//9ms   3
 			Rac_tren_poz_sample_counter = 0;
 			Racunanje_trenutne_pozicije();
 		}
 		
 		//Korekcija pravca i distance prema cilju
-		if(Pracenje_Pravca_sample_counter >= 30){	//30 x 1.5ms = 45ms
+		if(Pracenje_Pravca_sample_counter >= 30){	//90ms   30
+			
 			msg_counter++;
+			servo_counter++;
 			Pracenje_Pravca_sample_counter = 0;
 			Pracenje_pravca();
 		}
 		
 		//PID regulacija
-		if(PID_pozicioni_sample_counter >= 3){		//3 x 1.5ms = 4.5ms
+		if(PID_pozicioni_sample_counter >= 3){		//9ms    3
 			PID_pozicioni_sample_counter = 0;
 			PID_ugaoni();
-			if (stigao_flag == 2)
-			{
-			  PID_pravolinijski();
-			}
+			PID_pravolinijski();			
+			//PID_brzinski se poziva direktno u interaptu sistemskog tajmera TCE1!
 		}
-	}//while
-}//main
+		
+		//if(vreme_primanja > 200){
+			//vreme_primanja = 0;
+			//RX_i_E0 = 0;
+		//}
+		
+		if (okay_flag == 1){
+			SendChar('O');
+			SendChar('1');
+			SendChar('2');
+			SendChar('3');
+			SendChar('4');
+			SendChar('5');
+			SendChar('6');
+			SendChar('K');
+			okay_flag = 0;
+		}
+		
+		if (stigao_flag == 1){
+			SendChar('S');
+			SendChar('1');
+			SendChar('2');
+			SendChar('3');
+			SendChar('4');
+			SendChar('5');
+			SendChar('6');
+			SendChar('T');
+			stigao_flag=0;
+		}
+		
+	}
+}

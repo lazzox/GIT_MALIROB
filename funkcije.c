@@ -1,8 +1,8 @@
 /*
  * funkcije.c
  *
- * Created: 26/03/16 00:43:50
- * Author: Team Axis
+ * Created: 16/11/15 14:36:10
+ *  Author: marko
  */ 
 
 #include <avr/io.h>
@@ -19,15 +19,8 @@
 static char step1 = 0;
 static char flag1 = 0;
 
-volatile signed long
-X_pos,
-Y_pos,
-X_cilj,
-Y_cilj,
-teta,
-teta_cilj,
-teta_cilj_final,
-teta_last_value;
+
+
 
 
 
@@ -66,34 +59,82 @@ void zadaj_teta(signed long teta_des, unsigned char dir)
 	smer_zadati = dir;
 }
 
-void idi_pravo(signed long x, signed long y, unsigned long ugao){
-		X_cilj = -x * scale_factor_for_mm;
-		Y_cilj = -y * scale_factor_for_mm;
-		teta_cilj_final = (ugao * krug360) / 360;
-		smer_zadati = 2;
-}
-
-void idi_unazad(signed long x, signed long y, unsigned long ugao){
-	//zadaj_X_Y_teta(0,0,0,1);
+void idi_pravo(signed long x, signed long y, signed long ugao)
+{
+	modifikovana_zeljena_pravolinijska_brzina=zeljena_pravolinijska_brzina;
+	
 	X_cilj = -x * scale_factor_for_mm;
 	Y_cilj = -y * scale_factor_for_mm;
+	
+	teta_cilj_final = (ugao * krug360) / 360;
+	smer_zadati = 2;
+}
+
+// void posalji_poziciju(void)
+// {
+// 	switch(korak2){
+// 		case 0:
+// 			SendChar('P');
+// 			SendChar((X_pos>>8));
+// 			SendChar(X_pos);
+// 			SendChar((Y_pos>>8));
+// 			SendChar(Y_pos);
+// 			SendChar((teta>>8));
+// 			SendChar(teta);
+// 			SendChar('S');
+// 			overflow_primanje = 0;
+// 			korak2++;
+// 		break;		
+// 			
+// 		
+// 		default:
+// 		break;
+// 	}
+// }
+
+void idi_unazad(signed long x, signed long y, signed long ugao)
+{
+	//zadaj_X_Y_teta(0,0,0,1);
+	
+	modifikovana_zeljena_pravolinijska_brzina=zeljena_pravolinijska_brzina;
+	
+	X_cilj = -x * scale_factor_for_mm;
+	Y_cilj = -y * scale_factor_for_mm;
+	
 	teta_cilj_final = (ugao * krug360) / 360;
 	smer_zadati = 1;
 }
 
-void rotiraj(){
+void zaustavi_se_u_mestu(void)
+{
+	modifikovana_zeljena_pravolinijska_brzina=zeljena_pravolinijska_brzina;
 	
+	X_cilj=X_pos;
+	Y_cilj=Y_pos;
+	modifikovana_zeljena_pravolinijska_brzina=0;
+	stigao_sigurnosni=1;
+	//zeljena_brzina_okretanja=0;
+	//stigao_flag=0;
+	//set_direct_out=0;
+	
+}
+
+void SendChar_USB(char c)
+{
+	USARTC0.DATA = c;
+	while(!(USARTC0.STATUS & (1 << 5)));
 }
 
 void sendMsg(char *poruka)
 {
 	while(*poruka != '\0'){
-		sendChar(*poruka);
+		SendChar(*poruka);
 		poruka++;
 	}
 }
 
-void sendChar(char c)
+//E0 je komunikacija sa logika plocicom
+void SendChar(char c)
 {
 	USARTE0.DATA = c;
 	while(!(USARTE0.STATUS & (1 << 5)));
@@ -101,8 +142,6 @@ void sendChar(char c)
 
 void inicijalizuj_servo_tajmer_20ms()
 {
-	PORTF.DIR |= (1 << 0);	//servo 1
-	
 	//Clock source = 32/4 MHz = 8 MHz
 	TCF0.CTRLA |= (1 << 2 | 1 << 0);						//Set presclaer to 64, PER 2500 = 20 ms
 	TCF0.CTRLB |= (0x0F << 4 | 0x03 << 0);					//Enable Capture/compare A,B,C,D and select single slope PWM
@@ -121,229 +160,272 @@ void pomeri_servo_1(uint16_t deg)
 	TCF0.CCA = res;
 }
 
-ISR(TCF0_CCA_vect)
+void pomeri_servo_2(uint16_t deg)
 {
-	PORTF.OUT |= (1 << 0);
+	uint16_t res = (uint16_t)(deg*(250/180));	//250 cycles for 180 degree turn
+	if(res <= 0)
+	res = 125;								//125 cycles for 0 degree turn
+	else if(res > 250)
+	res = 250;
+	TCF0.CCB = res;
 }
 
-ISR(TCF0_OVF_vect)
+void pomeri_servo_3(uint16_t deg)
 {
-	PORTF.OUT &= ~(1 << 0);
+	uint16_t res = (uint16_t)(deg*(250/180));	//250 cycles for 180 degree turn
+	if(res <= 0)
+	res = 125;								//125 cycles for 0 degree turn
+	else if(res > 250)
+	res = 250;
+	TCF0.CCC = res;
 }
 
- void pravo_nazad(void)
+void pomeri_servo_4(uint16_t deg)
+{
+	uint16_t res = (uint16_t)(deg*(250/180));	//250 cycles for 180 degree turn
+	if(res <= 0)
+	res = 125;								//125 cycles for 0 degree turn
+	else if(res > 250)
+	res = 250;
+	TCF0.CCD = res;
+}
+
+
+
+
+
+ void demo_1(void)
  {
 	switch(step1)
 	{
-		
 		case 0:
-				idi_pravo(-500,-500,0);
-			 if(stigao_flag0 == 1){
-				step1++;
+			if(flag1 == 0)
+			{
+			
 				stigao_flag = 0;
-				stigao_flag0 = 0;
+				flag1 = 1;
+				//zadaj_teta(45,0);
+				idi_pravo(700,0,180);
+			
+				//sendChar('0');
+			}
+			else if(stigao_flag == 1)
+			{
+				step1++;
+				flag1 = 0;
+				sys_time=0;
 			}
 			break;
 		
-		
-		case 3:
-			if (sys_time>1200){		//666=1sec
-				if(flag1 == 0){
-					stigao_flag0 = 0;
-					flag1 = 1;
-					idi_unazad(0,0,0);
-					//zadaj_teta(180,1);
-					sendChar('1');
-				}
-				else if(stigao_flag0 == 1){
-					step1++;
-					flag1 = 0;
-			
-				}
-			}
-			break;	
-			
-			default:
-			break;
-	}
-		
- }
-			
-			
- void pun_krug(void)
- {
-	 switch(step1)
-	 {
-		 
-		 case 0:
-		 if(flag1 == 0){
-			 sendMsg("case 0");
-			 stigao_flag0 = 0;
-			 flag1 = 1;
-			 zadaj_teta(180,1);
-			// sendChar('0');
-		 }
-		 else if(stigao_flag0 == 1){
-			 step1++;
-			 flag1 = 0;
-			 sys_time=0;			 
-		 }
-		 break;
-	 }
-	 
-	 switch(step1) 
-	 {
-			 case 1:
-			 if(sys_time>2000){
-				 if(flag1 == 0){
-					 stigao_flag0 = 0;
-					 flag1 = 1;
-					 zadaj_teta(350,1);
-					 //zadaj_teta(180,1);
-					 //sendChar('1');
-					 sendMsg("case 1");
-				 }
-				 else if(stigao_flag0 == 1){
-					 step1++;
-					 flag1 = 0;
-					 sys_time=0;
-			 
-				 }
-				 break;
-			 }
-	 }
- }
-
-void okreni_pa_idi(void){
-	//sendMsg("step1 ");
-	//sendChar((char)step1);
-	  switch(step1)
-	  {
-		  //case 0:
-			  //if(flag1 == 0){
-				  //sys_time = 0;
-				  //stigao_flag0 = 0;
-				  //zadaj_teta(135,1);
-				  //flag1 = 1;	 
-			  //}
-			  //else if(stigao_flag0 == 1 && sys_time == 1332){
-				  //step1++;
-				  //flag1 = 0;
-			  //}
-		  //break;
-		  case 0:
-			  if(flag1 == 0){
-				  stigao_flag0 = 0;
-				  flag1 = 1;
-				  idi_pravo(-500,-500,0);
-			  }
-			  else if(stigao_flag0 == 1){
-				  step1++;
-				  flag1 = 0;
-			  }
-		  break;
+ 		case 1:
+ 			
+ 				if(flag1 == 0)
+ 				{
+ 					stigao_flag = 0;
+ 					flag1 = 1;
+ 					//idi_pravo(500,0,0);
+ 					idi_pravo(700,300,0);
+ 			
+ 					//sendChar('0');
+ 				}
+ 				else if(stigao_flag == 1)
+ 				{
+ 					step1++;
+ 					flag1 = 0;
+ 					sys_time=0;
+ 				}
+ 			
+ 			break;
+ 			
+//  			case 2:
+//  			if(sys_time>1533)
+//  			{
+//  				if(flag1 == 0)
+//  				{
+//  					stigao_flag0 = 0;
+//  					flag1 = 1;
+//  					//idi_pravo(500,0,0);
+//  					idi_pravo(2500,0,0);
+//  					
+//  					//sendChar('0');
+//  				}
+//  				else if(stigao_flag0 == 1)
+//  				{
+//  					step1++;
+//  					flag1 = 0;
+//  					sys_time=0;
+//  				}
+//  			}
+//  			break;
+// 			
+// 			case 3:
+// 			if(sys_time>1533)
+// 			{
+// 				if(flag1 == 0)
+// 				{
+// 					stigao_flag0 = 0;
+// 					flag1 = 1;
+// 					//idi_pravo(500,0,0);
+// 					idi_unazad(0,0,0);
+// 					
+// 					//sendChar('0');
+// 				}
+// 				else if(stigao_flag0 == 1)
+// 				{
+// 					step1++;
+// 					flag1 = 0;
+// 					sys_time=0;
+// 				}
+// 			}
+// 			break;
+// 		
 		default:
 		break;
-	  }
-}
+		
+ 	}
+ }
 
-
-
-void demo_1(void)
-{
+void proba (void){
 	switch(step1)
 	{
+		case 0:
+			if(flag1 == 0){
+				stigao_flag = 0;
+				flag1 = 1;
+				idi_unazad(750,0,0);
+				//zadaj_teta(90,0);
+				///sendChar('0');
+			}
+			else if(stigao_flag == 1){
+				step1++;
+				flag1 = 0;
+				sys_time=0;
+			}
+		break;
 		
+		case 1:
+			if(flag1 == 0){
+				stigao_flag = 0;
+				flag1 = 1;
+				idi_unazad(0,0,0);
+				// zadaj_X_Y(-500,0,2);
+				//sendChar('1');
+			}
+			else if(stigao_flag == 1){
+				step1++;
+				flag1 = 0;
+				sys_time=0;
+			}
+		break;
+		
+		//case 2:
+		//if(sys_time>1500){
+			//if(flag1 == 0){
+				//stigao_flag = 0;
+				//flag1 = 1;
+				//idi_unazad(900,0,0);
+				//// zadaj_X_Y(-500,0,2);
+				////sendChar('1');
+			//}
+			//else if(stigao_flag == 1){
+				//step1++;
+				//flag1 = 0;
+				//sys_time=0;
+			//}
+		//}
+		//break;
+		//
+		//case 3:
+		//if(sys_time>1500){
+			//if(flag1 == 0){
+				//stigao_flag = 0;
+				//flag1 = 1;
+				//idi_unazad(0,0,0);
+				//// zadaj_X_Y(-500,0,2);
+				////sendChar('1');
+			//}
+			//else if(stigao_flag == 1){
+				//step1++;
+				//flag1 = 0;
+				//sys_time=0;
+			//}
+		//}
+		//break;
+		
+		default:
+		break;
+	}
+}
+
+void kocka(void)
+{
+	
+	switch(step1)
+	{
 		case 0:
 		if(flag1 == 0){
-			//sendMsg("case 0");
-			stigao_flag0 = 0;
+			stigao_flag = 0;
 			flag1 = 1;
-			idi_pravo(-500,500,0);
-			// sendChar('0');
+			idi_pravo(400,0,0);
+			// zadaj_X_Y(-500,0,2);
+			SendChar('0');
 		}
-		else if(stigao_flag0 == 1){
+		else if(stigao_flag == 1){
 			step1++;
 			flag1 = 0;
 			sys_time=0;
 		}
-	
 		break;
-
-	
-	default:
-	break;
+		
+		case 1:
+		if(flag1 == 0){
+			stigao_flag = 0;
+			flag1 = 1;
+			idi_pravo(400,400,0);
+			// zadaj_X_Y(-500,0,2);
+			sendChar('1');
+		}
+		else if(stigao_flag == 1){
+			step1++;
+			flag1 = 0;
+			sys_time=0;
+			
+		}
+		break;
+		
+		case 2:
+		if(flag1 == 0){
+			stigao_flag = 0;
+			flag1 = 1;
+			idi_pravo(0,400,0);
+			// zadaj_X_Y(-500,0,2);
+			sendChar('2');
+		}
+		else if(stigao_flag == 1){
+			step1++;
+			flag1 = 0;
+			sys_time=0;
+			
+		}
+		break;
+		
+		case 3:
+		if(flag1 == 0){
+			stigao_flag = 0;
+			flag1 = 1;
+			idi_pravo(0,0,0);
+			// zadaj_X_Y(-500,0,2);
+			sendChar('3');
+		}
+		else if(stigao_flag == 1){
+			step1++;
+			flag1 = 0;
+			sys_time=0;
+			
+		}
+		break;
+		
+		default:
+		break;
 	}
 }
- void kocka(void)
-  {
-	  
-	  switch(step1)
-	  {
-		  case 0:
-			  if(flag1 == 0){
-				  stigao_flag0 = 0;
-				  flag1 = 1;
-				  idi_pravo(400,0,0);
-				  // zadaj_X_Y(-500,0,2);
-				  sendChar('0');
-			  }
-			  else if(stigao_flag0 == 1){
-				  step1++;
-				  flag1 = 0;
-				  sys_time=0;
-			  }
-		  break;
-		  
-		  case 1:
-			  if(flag1 == 0){
-				  stigao_flag0 = 0;
-				  flag1 = 1;
-				  idi_pravo(400,-400,0);
-				  // zadaj_X_Y(-500,0,2);
-				  sendChar('1');
-			  }
-			  else if(stigao_flag0 == 1){
-				  step1++;
-				  flag1 = 0;
-				  sys_time=0;
-				  
-			  }
-		  break;
-		  
-		   case 2:
-			   if(flag1 == 0){
-				   stigao_flag0 = 0;
-				   flag1 = 1;
-				   idi_pravo(0,-400,0);
-				   // zadaj_X_Y(-500,0,2);
-				   sendChar('2');
-			   }
-			   else if(stigao_flag0 == 1){
-				   step1++;
-				   flag1 = 0;
-				   sys_time=0;
-				   
-			   }
-		   break;
-		   
-		    case 3:
-			    if(flag1 == 0){
-				    stigao_flag0 = 0;
-				    flag1 = 1;
-				    idi_pravo(0,0,0);
-				    // zadaj_X_Y(-500,0,2);
-				    sendChar('3');
-			    }
-			    else if(stigao_flag0 == 1){
-				    step1++;
-				    flag1 = 0;
-				    sys_time=0;
-				    
-			    }
-		    break;
-		  
-		  default:
-		  break;
-	  }
-  }

@@ -3,7 +3,6 @@
  *
  * Created: 4/19/2011 2:38:26 PM
  *  Author: Milan Romic *  Author: robert kovacs */
-
 #include "Headers/avr_compiler.h"
 #include "Headers/usart_driver.h"
 #include "Headers/TC_driver.h"
@@ -17,17 +16,19 @@
 void Podesi_Parametre_Robota(void)
 {
 	//mehanicke karakteristike
-	metar = 38415*2; //75000; //broj inkremenata za 1m - eksperiment!      /39035*2 izracunata vrednost
-	krug360 = 13925; //49650 - eksperiment 1;  //66250 - matematika;	//broj inkremenata za jedan krug - eksperiment!		//13653
+	metar = 38415*2;				 //75000; //broj inkremenata za 1m - eksperiment!      /39035*2 izracunata vrednost 88,5
+	krug360 = 13925;				//49650 - eksperiment 1;  //66250 - matematika;	//broj inkremenata za jedan krug - eksperiment!		//13653
 	
 	scale_factor_for_mm = metar / 1000;
 	krug180 = krug360 >> 1;	
 	krug90 =  krug360 >> 2;
 	krug45 =  krug360 >> 3;
-	krug180_PI = krug180 / M_PI;			
+	krug180_PI = krug180 / M_PI;	
+	//double flag_krug2 = atan2((double)(-500), (double)(-500));
+	//flag_krug = (signed long)(flag_krug2 *krug180_PI);
 
 	smer_zadati = 1;						//1-napred, 2-nazad, 0-sam bira smer
-	zeljena_pravolinijska_brzina = 500;		//brzina kojom se pravo krece robot
+	zeljena_pravolinijska_brzina = 400;		//brzina kojom se pravo krece robot
 	zeljena_brzina_okretanja = 200; //brzina kojom se okrece robot
 	max_brzina_motora = 800;				//eksperimentalno utvrdjena max brzina motora [impuls/vreme_odabiranja(3ms)] (max je oko 1000)
 	
@@ -40,24 +41,24 @@ void Podesi_PID_Pojacanja(void)
 {
 	//PID parametri
 	//Regulacija pravolinijskog kretanja
-	Kp_pravolinijski = 3.5;			//6		2.5
-	Ki_pravolinijski = 0;			//1.6	3
-	Kd_pravolinijski = 30;		//30		60
-	Kp_teta_pravolinijski = 20;
-		
+	Kp_pravolinijski = 3.5;			//6		2.5			12		72
+	Ki_pravolinijski = 1.1;			//1.6	3			0.625	0.41
+	Kd_pravolinijski = 10;			//30	60			2.5		0.6
+	//Kp_teta_pravolinijski =15;
+
 	//Regulacija ugaonog zakretanja
-	Kp_teta = 20;
-	Ki_teta = 1.2;
-	Kd_teta = 20;
-	Kp_teta_okretanje = 20;
-		
+	Kp_teta = 12;
+	Ki_teta = 0.6;
+	Kd_teta = 2.1;
+	//Kp_teta_okretanje = 0;
+
 	//Regulacija brzine
 	Kp_brzina = 0.3;
 	Ki_brzina = 0;
 	Kd_brzina = 0;
 
 	//Ubrzavanje po rampi
-	Accel_PID_pos = 1;	//bilo 2
+	Accel_PID_pos = 2;	//bilo 2
 }
 
 void Podesi_QDEC(void)
@@ -170,58 +171,34 @@ void Podesi_Oscilator(void)
 void Podesi_USART_Komunikaciju(void)
 {
 	//USART_E1 - BT - 115200
-  	//PE7 (TXE1) - izlaz  
-	PORTE.DIR |= PIN7_bm;
-	//PE6 (RXE1) - ulaz
-	PORTE.DIR  &= ~PIN6_bm;
-	//Koriscenje USARTE1 (definisano u globals.h) i inicijalizacija buffer-a
-	USART_InterruptDriver_Initialize(&USART_E1_data, &USARTE1, USART_DREINTLVL_LO_gc);
-	//USARTE1, 8 Data bits, No Parity, 1 Stop bit.
-	USART_Format_Set(USART_E1_data.usart, USART_CHSIZE_8BIT_gc, USART_PMODE_DISABLED_gc, false);
-	//Aktiviranje RXC interrupt-a
-	USART_RxdInterruptLevel_Set(USART_E1_data.usart, USART_RXCINTLVL_LO_gc);
-	//Podesavanje Baud rate
-	//USART_Baudrate_Set(&USARTE1, 14, -2 );	//115200
-	USART_Baudrate_Set(&USARTE1,3269, -6 );	//9600
-	//Ukljucivanje RX i TX
-	USART_Rx_Enable(USART_E1_data.usart);
+	PORTE.DIR |= PIN7_bm;//PE7 (TXE1) - izlaz  
+	PORTE.DIR  &= ~PIN6_bm;//PE6 (RXE1) - ulaz
+	USART_InterruptDriver_Initialize(&USART_E1_data, &USARTE1, USART_DREINTLVL_LO_gc);//Koriscenje USARTE1 (definisano u globals.h) i inicijalizacija buffer-a
+	USART_Format_Set(USART_E1_data.usart, USART_CHSIZE_8BIT_gc, USART_PMODE_DISABLED_gc, false);//USARTE1, 8 Data bits, No Parity, 1 Stop bit.
+	USART_RxdInterruptLevel_Set(USART_E1_data.usart, USART_RXCINTLVL_LO_gc);//Aktiviranje RXC interrupt-a
+	USART_Baudrate_Set(&USARTE1,107, -5  );//Podesavanje Baud rate	//9600
+	USART_Rx_Enable(USART_E1_data.usart);	//Ukljucivanje RX i TX
 	USART_Tx_Enable(USART_E1_data.usart);
 	
-	//USART_E0 BT_RS232 - MCU - 19200
-	//PE3 (TXE0) - izlaz
-	PORTE.DIR |= PIN3_bm;
-	//PE2 (RXE0) - ulaz
-	PORTE.DIR  &= ~PIN2_bm;
-	//Koriscenje USARTE0 i inicijalizacija buffer-a
-	USART_InterruptDriver_Initialize(&USART_E0_data, &USARTE0, USART_DREINTLVL_LO_gc);
-	//USARTE0, 8 Data bits, No Parity, 1 Stop bit.
-	USART_Format_Set(USART_E0_data.usart, USART_CHSIZE_8BIT_gc, USART_PMODE_DISABLED_gc, false);
-	//Aktiviranje RXC interrupt-a
-	USART_RxdInterruptLevel_Set(USART_E0_data.usart, USART_RXCINTLVL_LO_gc);
-	//19200 @ 32Mhz as calculated from ProtoTalk Calc
-	//USART_Baudrate_Set(&USARTE0, 107, -5 ); //115200
-	//                            bsel, bscale
-	USART_Baudrate_Set(&USARTE0, 1, 1 ); //62500
-	//Ukljucivanje RX i TX
-	USART_Rx_Enable(USART_E0_data.usart);
+	//USART_E0 BT_RS232 - Salje na LOGIKU - 56000
+	PORTE.DIR |= PIN3_bm;//PE3 (TXE0) - izlaz
+	PORTE.DIR  &= ~PIN2_bm;//PE2 (RXE0) - ulaz
+	USART_InterruptDriver_Initialize(&USART_E0_data, &USARTE0, USART_DREINTLVL_LO_gc);//Koriscenje USARTE0 i inicijalizacija buffer-a
+	USART_Format_Set(USART_E0_data.usart, USART_CHSIZE_8BIT_gc, USART_PMODE_DISABLED_gc, false);//USARTE0, 8 Data bits, No Parity, 1 Stop bit.
+	USART_RxdInterruptLevel_Set(USART_E0_data.usart, USART_RXCINTLVL_LO_gc);//Aktiviranje RXC interrupt-a
+	USART_Baudrate_Set(&USARTE0,127,-4);  //9600---> 3269, -6      //107, -5---->115200 //12,1 ----> 19200  //127, -4 ---> 56000
+	USART_Rx_Enable(USART_E0_data.usart);//Ukljucivanje RX i TX
 	USART_Tx_Enable(USART_E0_data.usart);
 	
 
 	//USART_C0 - Xmega_USB - 115200
-	//PE3 (TXE0) - izlaz
-	PORTC.DIR &= PIN3_bm;
-	//PE2 (RXE0) - ulaz
-	PORTC.DIR  |= ~PIN2_bm;
-	//Koriscenje USARTE0 i inicijalizacija buffer-a
-	USART_InterruptDriver_Initialize(&USART_C0_data, &USARTC0, USART_DREINTLVL_LO_gc);
-	//USARTE0, 8 Data bits, No Parity, 1 Stop bit.
-	USART_Format_Set(USART_C0_data.usart, USART_CHSIZE_8BIT_gc, USART_PMODE_DISABLED_gc, false);
-	//Aktiviranje RXC interrupt-a
-	USART_RxdInterruptLevel_Set(USART_C0_data.usart, USART_RXCINTLVL_LO_gc);
-	//Podesavanje Baud rate
-	USART_Baudrate_Set(&USARTC0, 107, -5 );	//115200
-	//Ukljucivanje RX i TX
-	USART_Rx_Enable(USART_C0_data.usart);
+	PORTC.DIR &= PIN3_bm;//PE3 (TXE0) - izlaz
+	PORTC.DIR |= ~PIN2_bm;	//PE2 (RXE0) - ulaz
+	USART_InterruptDriver_Initialize(&USART_C0_data, &USARTC0, USART_DREINTLVL_LO_gc);//Koriscenje USARTE0 i inicijalizacija buffer-a
+	USART_Format_Set(USART_C0_data.usart, USART_CHSIZE_8BIT_gc, USART_PMODE_DISABLED_gc, false); 	//USARTE0, 8 Data bits, No Parity, 1 Stop bit.
+	USART_RxdInterruptLevel_Set(USART_C0_data.usart, USART_RXCINTLVL_LO_gc);//Aktiviranje RXC interrupt-a
+	USART_Baudrate_Set(&USARTC0, 107, -5 );	//Podesavanje Baud rate//115200
+	USART_Rx_Enable(USART_C0_data.usart);//Ukljucivanje RX i TX
 	USART_Tx_Enable(USART_C0_data.usart);
 
 }
@@ -240,7 +217,7 @@ void Podesi_Tajmere(void)
 	
 	//System tajmer za uzorkovanje enkodera i PID regulaciju
 	/* Set period ( TOP value ). */
-	TC_SetPeriod( &TCE1, 0x002F ); //0x00BF = 12ms //0x5F = 6ms //0x2F = 3ms <- Mirko //Nasa -> //0x5DC0
+	TC_SetPeriod( &TCE1, 0x002F ); //0x5F = 3ms //0x2F = 1.5ms Lazzo
 	/* Enable overflow interrupt at low level */
 	TC1_SetOverflowIntLevel( &TCE1, TC_OVFINTLVL_MED_gc );
 	/* Start Timer/Counter. */
@@ -277,12 +254,23 @@ void Podesi_Pinove(void)
 						false,
 						PORT_OPC_PULLUP_gc,
 						PORT_ISC_FALLING_gc);
+						
+	//PORTC - digitalni izlazi
+						
+	PORT_SetPinsAsOutput(&PORTC,0xFF);
+	PORT_ConfigurePins(&PORTC,
+	0xFF,
+	false,
+	false,
+	PORT_OPC_PULLDOWN_gc,
+	PORT_ISC_BOTHEDGES_gc);
+	PORT_ClearPins(&PORTC, 0xFF);
 	
 	//podesavanje interrupt0 za PORTB.0 - ISR(PORTB_INT0_vect)
 	PORT_ConfigureInterrupt0( &PORTB, PORT_INT0LVL_LO_gc, 0x01 );
 	
 	//PORTC - FET izlazi 
-	PORT_SetPinsAsOutput(&PORTC, 0xFF);
+	//PORT_SetPinsAsOutput(&PORTC, 0xFF);
 //  	PORT_MapVirtualPort0( PORTCFG_VP0MAP_PORTC_gc );	//mapiranje virtualnog porta 0 na PORTC
 //  	PORT_SetDirection( &VPORT0, 0xFF );
 //		VPORT0.OUT = 0x00;	//clear

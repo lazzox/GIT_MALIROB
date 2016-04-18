@@ -1,3 +1,12 @@
+# Folderi nepotrebni za uplodovanje koda
+Debug/
+*.eep
+*.map
+*.lss
+*.o
+*.d
+Debug/adc_driver.o
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -46,15 +55,3 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Folderi nepotrebni za uplodovanje koda
-#   ujedno izbrisani radi preglednosti
-*.atsuo
-*.o
-*.d
-*.eep
-*.srec
-*.map
-*.lss
-*.hex
-*.elf
-.Debug

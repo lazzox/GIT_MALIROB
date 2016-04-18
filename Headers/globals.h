@@ -34,7 +34,9 @@ Ki_teta,
 
 Kp_brzina,
 Ki_brzina,
-Kd_brzina;
+Kd_brzina,
+
+flag_krug;
 
 extern volatile unsigned char
 //regulacija
@@ -43,12 +45,14 @@ stop_PID_desni,
 set_direct_out,
 smer_zadati,
 stigao_flag,
-stigao_flag0, //flag_za_cepanje komandi
+stigao_sigurnosni,
 struja_L,
 struja_R,
 //komunikacija
 sendArray[128],
 receiveArray[128],
+vreme_primanja,
+okay_flag,
 CHC,
 RX_i_E0,
 RX_i_E1,
@@ -80,6 +84,7 @@ extern volatile signed char
 smer_trenutni,
 offset; // za ADC
 
+
 extern volatile unsigned int
 broj1, broj10, broj100, broj1000, broj10000,
 sysvrem,
@@ -94,7 +99,10 @@ vreme_cekanja_tete,
 vreme_pozicioniranja,
 sys_time,
 Accel_PID_pos,
-fsm_timer;
+fsm_timer,
+korak2,
+overflow_primanje,
+meca;
 
 extern volatile signed int
 broj,
@@ -151,7 +159,6 @@ translacija,
 teta,
 teta_cilj,
 teta_cilj_final,
-teta_last_value,
 teta_greska,
 teta_greska_prethodno,
 teta_greska_sum,
