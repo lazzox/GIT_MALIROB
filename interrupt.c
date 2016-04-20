@@ -15,10 +15,9 @@
 #include "math.h"
 #include "Headers/funkcije.h"
 
-signed long X_Received;
-signed long Y_Received;
-signed long U_Received;
-
+volatile signed long X_Received;
+volatile signed long Y_Received;
+volatile signed long U_Received;
 
 //Tajmer za rad drajvera
 ISR(TCE1_OVF_vect)	//1.5ms
@@ -106,7 +105,16 @@ ISR(USARTE0_RXC_vect)
 					U_Received = receiveArray[5] ;
 					U_Received <<=8;
 					U_Received |= receiveArray[6];
-		
+					
+					//LOGIKA DODAJE +4000 za X, Y i +720 za ugao
+					//TO JE DA BI SE SLALI POZITIVNI BROJEVI PREKO USART-a
+					//A KASNIJE SE ODUZME DA BI SE DOBILI PRAVI BROJEVI (cak
+					// i ako su negativni)
+					X_Received -= 4000;
+					Y_Received -= 4000;
+					U_Received -= 720;
+					
+					stigao_flag_sigurnosni = 1;
 					stigao_flag = 0;
 					vreme_primanja = 0;
 					idi_pravo(X_Received,Y_Received,U_Received);
@@ -136,26 +144,76 @@ ISR(USARTE0_RXC_vect)
 				U_Received <<=8;
 				U_Received |= receiveArray[6];
 				
+				//LOGIKA DODAJE +4000 za X, Y i +720 za ugao
+				//TO JE DA BI SE SLALI POZITIVNI BROJEVI PREKO USART-a
+				//A KASNIJE SE ODUZME DA BI SE DOBILI PRAVI BROJEVI (cak
+				// i ako su negativni)
+				X_Received -= 4000;
+				Y_Received -= 4000;
+				U_Received -= 720;
+				
+				stigao_flag_sigurnosni = 1;
 				stigao_flag = 0;
 				vreme_primanja = 0;
 				idi_unazad(X_Received,Y_Received,U_Received);
 				
 				RX_i_E0 = 0;
 				okay_flag = 1;
-				}
-				else{
+				}else{
 					RX_i_E0 = 0;
 				}
-				
-				
+				break;		
+					
+				case 'D': //A______X
+				if(receiveArray[7] == 'X'){ //brzina
+					//parsiraj ovde sve
+					X_Received = receiveArray[1];
+					X_Received <<=  8;					
+					X_Received |= receiveArray[2];
+					
+					
+					stigao_flag = 0;
+					vreme_primanja = 0;
+					zeljena_pravolinijska_brzina=X_Received;
+		
+					okay_flag = 1;
+					}else{
+					RX_i_E0 = 0;
+				}
+				break;
 				
 				case 'S':
 				if(receiveArray[7] == 'P'){
-					//parsiraj ovde sve
 					zaustavi_se_u_mestu();
 					RX_i_E0;
 				}
 				break;
+				
+				case 'G': //G______S
+				if(receiveArray[7] == 'S'){ //idi u tacku primljeno!
+					X_Received = receiveArray[1];
+					X_Received <<=  8;
+					X_Received |= receiveArray[2];
+					
+					Y_Received = receiveArray [3];
+					Y_Received <<= 8;
+					Y_Received |= receiveArray[4];
+					
+					U_Received = receiveArray[5] ;
+					U_Received <<=8;
+					U_Received |= receiveArray[6];
+					
+					postavi_sistem(X_Received,Y_Received,U_Received);
+					
+					okay_flag = 1;
+					vreme_primanja=0;
+					RX_i_E0 = 0;
+				}
+				else {
+					RX_i_E0 = 0;
+				}
+				break;
+				
 				
 				
 			

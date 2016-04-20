@@ -45,7 +45,7 @@ stop_PID_desni,
 set_direct_out,
 smer_zadati,
 stigao_flag,
-stigao_sigurnosni,
+stigao_flag_sigurnosni,
 struja_L,
 struja_R,
 //komunikacija
@@ -100,8 +100,6 @@ vreme_pozicioniranja,
 sys_time,
 Accel_PID_pos,
 fsm_timer,
-korak2,
-overflow_primanje,
 meca;
 
 extern volatile signed int

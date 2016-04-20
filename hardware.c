@@ -20,20 +20,20 @@ void Podesi_Parametre_Robota(void)
 	krug360 = 13925;				//49650 - eksperiment 1;  //66250 - matematika;	//broj inkremenata za jedan krug - eksperiment!		//13653
 	
 	scale_factor_for_mm = metar / 1000;
-	krug180 = krug360 >> 1;	
+	krug180 = krug360 >> 1;
 	krug90 =  krug360 >> 2;
 	krug45 =  krug360 >> 3;
-	krug180_PI = krug180 / M_PI;	
+	krug180_PI = krug180 / M_PI;
 	//double flag_krug2 = atan2((double)(-500), (double)(-500));
 	//flag_krug = (signed long)(flag_krug2 *krug180_PI);
 
 	smer_zadati = 1;						//1-napred, 2-nazad, 0-sam bira smer
-	zeljena_pravolinijska_brzina = 400;		//brzina kojom se pravo krece robot
-	zeljena_brzina_okretanja = 200; //brzina kojom se okrece robot
+	zeljena_pravolinijska_brzina = 325;		//brzina kojom se pravo krece robot
+	zeljena_brzina_okretanja = 225; //brzina kojom se okrece robot
 	max_brzina_motora = 800;				//eksperimentalno utvrdjena max brzina motora [impuls/vreme_odabiranja(3ms)] (max je oko 1000)
 	
 	modifikovana_zeljena_pravolinijska_brzina = zeljena_pravolinijska_brzina;
-	rezervni_ugao = krug45/45;		//vrednost ugaone greske preko koje se radi reorijentacija robota  
+	rezervni_ugao = krug45/45;		//vrednost ugaone greske preko koje se radi reorijentacija robota
 	PWM_perioda = 800;			//PWM tajmer broji do 800 - frekvenicja 20KHz
 }
 
@@ -41,19 +41,19 @@ void Podesi_PID_Pojacanja(void)
 {
 	//PID parametri
 	//Regulacija pravolinijskog kretanja
-	Kp_pravolinijski = 3.5;			//6		2.5			12		72
-	Ki_pravolinijski = 1.1;			//1.6	3			0.625	0.41
-	Kd_pravolinijski = 10;			//30	60			2.5		0.6
-	//Kp_teta_pravolinijski =15;
+	Kp_pravolinijski = 30;			//30
+	Ki_pravolinijski = 0;			//
+	Kd_pravolinijski = 1800;		//2200
+	Kp_teta_pravolinijski =10;		//10			kakd je tastojanje vece od 10 cm
 
 	//Regulacija ugaonog zakretanja
-	Kp_teta = 12;
-	Ki_teta = 0.6;
-	Kd_teta = 2.1;
-	//Kp_teta_okretanje = 0;
+	Kp_teta = 1000;					//1000		
+	Ki_teta = 0;					//
+	Kd_teta = 150;					//150
+	Kp_teta_okretanje =45;			//	45				kad je rastojanje manje od 10 cm
 
 	//Regulacija brzine
-	Kp_brzina = 0.3;
+	Kp_brzina = 0.25;
 	Ki_brzina = 0;
 	Kd_brzina = 0;
 
