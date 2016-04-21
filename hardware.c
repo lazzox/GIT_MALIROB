@@ -17,7 +17,7 @@ void Podesi_Parametre_Robota(void)
 {
 	//mehanicke karakteristike
 	metar = 38415*2;				 //75000; //broj inkremenata za 1m - eksperiment!      /39035*2 izracunata vrednost 88,5
-	krug360 = 13925;				//49650 - eksperiment 1;  //66250 - matematika;	//broj inkremenata za jedan krug - eksperiment!		//13653
+	krug360 = 13830;				//49650 - eksperiment 1;  //66250 - matematika;	//broj inkremenata za jedan krug - eksperiment!		//13653
 	
 	scale_factor_for_mm = metar / 1000;
 	krug180 = krug360 >> 1;
@@ -28,8 +28,8 @@ void Podesi_Parametre_Robota(void)
 	//flag_krug = (signed long)(flag_krug2 *krug180_PI);
 
 	smer_zadati = 1;						//1-napred, 2-nazad, 0-sam bira smer
-	zeljena_pravolinijska_brzina = 325;		//brzina kojom se pravo krece robot
-	zeljena_brzina_okretanja = 225; //brzina kojom se okrece robot
+	zeljena_pravolinijska_brzina = 250;		//brzina kojom se pravo krece robot
+	zeljena_brzina_okretanja = 200; //brzina kojom se okrece robot
 	max_brzina_motora = 800;				//eksperimentalno utvrdjena max brzina motora [impuls/vreme_odabiranja(3ms)] (max je oko 1000)
 	
 	modifikovana_zeljena_pravolinijska_brzina = zeljena_pravolinijska_brzina;
@@ -41,24 +41,24 @@ void Podesi_PID_Pojacanja(void)
 {
 	//PID parametri
 	//Regulacija pravolinijskog kretanja
-	Kp_pravolinijski = 30;			//30
-	Ki_pravolinijski = 0;			//
-	Kd_pravolinijski = 1800;		//2200
-	Kp_teta_pravolinijski =10;		//10			kakd je tastojanje vece od 10 cm
+	Kp_pravolinijski = 10;//60;			//10
+	Ki_pravolinijski = 0;				//0
+	Kd_pravolinijski = 200;//200;		//200	
+	Kp_teta_pravolinijski = 12;//8;		//10		kakd je tastojanje vece od 10 cm
 
 	//Regulacija ugaonog zakretanja
-	Kp_teta = 1000;					//1000		
-	Ki_teta = 0;					//
-	Kd_teta = 150;					//150
-	Kp_teta_okretanje =45;			//	45				kad je rastojanje manje od 10 cm
+	Kp_teta = 10;//15;					//15		
+	Ki_teta = 0.2;						//0
+	Kd_teta = 100;//150;				//50
+	Kp_teta_okretanje =10;//45;			//45				kad je rastojanje manje od 10 cm
 
 	//Regulacija brzine
-	Kp_brzina = 0.25;
-	Ki_brzina = 0;
-	Kd_brzina = 0;
-
+	Kp_brzina = 0.35;					//0.35
+	Ki_brzina = 0;						//0
+	Kd_brzina = 1.22;//0.7;				//1.22
+	
 	//Ubrzavanje po rampi
-	Accel_PID_pos = 2;	//bilo 2
+	Accel_PID_pos =5;	//bilo 2		//5
 }
 
 void Podesi_QDEC(void)

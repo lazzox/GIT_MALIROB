@@ -85,11 +85,20 @@ void zadaj_teta(signed long teta_des, unsigned char dir)
 void idi_pravo(signed long x, signed long y, signed long ugao)
 {
 	//modifikovana_zeljena_pravolinijska_brzina=zeljena_pravolinijska_brzina;
-	
 	X_cilj = -x * scale_factor_for_mm;
 	Y_cilj = -y * scale_factor_for_mm;
 	
 	teta_cilj_final = (ugao * krug360) / 360;
+	smer_zadati = 2;
+}
+
+void idi_pravo2(signed long x, signed long y)
+{
+	//modifikovana_zeljena_pravolinijska_brzina=zeljena_pravolinijska_brzina;
+	X_cilj = -x * scale_factor_for_mm;
+	Y_cilj = -y * scale_factor_for_mm;
+	ugao_timer=0;
+	pravo2_flag=1;
 	smer_zadati = 2;
 }
 
@@ -98,7 +107,6 @@ void idi_unazad(signed long x, signed long y, signed long ugao)
 	//zadaj_X_Y_teta(0,0,0,1);
 	
 	//modifikovana_zeljena_pravolinijska_brzina=zeljena_pravolinijska_brzina;
-	
 	X_cilj = -x * scale_factor_for_mm;
 	Y_cilj = -y * scale_factor_for_mm;
 	
@@ -111,12 +119,11 @@ void zaustavi_se_u_mestu(void)
 	modifikovana_zeljena_pravolinijska_brzina=0;
 	X_cilj=X_pos;
 	Y_cilj=Y_pos;
-	PID_ukupni_L=0;
-	PID_ukupni_R=0;
+	teta_cilj_final=teta;
+	//set_direct_out=1;
 	
 	//zeljena_brzina_okretanja=0;
 	//stigao_flag=0;
-	set_direct_out=0;
 		
 }
 
@@ -427,7 +434,7 @@ void kocka_poy(void){
 		if(flag1 == 0){
 			stigao_flag = 0;
 			flag1 = 1;
-			idi_pravo(0,0,0);
+			idi_unazad(0,0,0);
 			stigao_flag_sigurnosni = 1;
 			// zadaj_X_Y(-500,0,2);
 			//sendChar('3');
