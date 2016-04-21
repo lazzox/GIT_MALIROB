@@ -18,6 +18,10 @@
 volatile signed long X_Received;
 volatile signed long Y_Received;
 volatile signed long U_Received;
+volatile signed long XX_Received;
+volatile signed long YY_Received;
+volatile signed long UU_Received;
+volatile signed long Speed_Recived;
 
 //Tajmer za rad drajvera
 ISR(TCE1_OVF_vect)	//1.5ms
@@ -202,14 +206,14 @@ ISR(USARTE0_RXC_vect)
 				case 'D': //A______X
 				if(receiveArray[7] == 'X'){ //brzina
 					//parsiraj ovde sve
-					X_Received = receiveArray[1];
-					X_Received <<=  8;					
-					X_Received |= receiveArray[2];
+					Speed_Recived = receiveArray[1];
+					Speed_Recived <<=  8;					
+					Speed_Recived |= receiveArray[2];
 					
 					
 					stigao_flag = 0;
 					vreme_primanja = 0;
-					zeljena_pravolinijska_brzina=X_Received;
+					zeljena_pravolinijska_brzina=Speed_Recived;
 		
 					okay_flag = 1;
 					}else{
@@ -253,19 +257,19 @@ ISR(USARTE0_RXC_vect)
 				
 				case 'G': //G______S
 				if(receiveArray[7] == 'S'){ //idi u tacku primljeno!
-					X_Received = receiveArray[1];
-					X_Received <<=  8;
-					X_Received |= receiveArray[2];
+					XX_Received = receiveArray[1];
+					XX_Received <<=  8;
+					XX_Received |= receiveArray[2];
 					
-					Y_Received = receiveArray [3];
-					Y_Received <<= 8;
-					Y_Received |= receiveArray[4];
+					YY_Received = receiveArray [3];
+					YY_Received <<= 8;
+					YY_Received |= receiveArray[4];
 					
-					U_Received = receiveArray[5] ;
-					U_Received <<=8;
-					U_Received |= receiveArray[6];
+					UU_Received = receiveArray[5] ;
+					UU_Received <<=8;
+					UU_Received |= receiveArray[6];
 					
-					postavi_sistem(X_Received,Y_Received,U_Received);
+					postavi_sistem(XX_Received,YY_Received,UU_Received);
 					
 					okay_flag = 1;
 					vreme_primanja=0;

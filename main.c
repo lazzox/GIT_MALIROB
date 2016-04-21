@@ -43,8 +43,8 @@ Pe_brzina_R,
 Ie_brzina_L,
 Ie_brzina_R;
 
-volatile unsigned int PRG_flag = 0;
-
+volatile unsigned int 
+PRG_flag = 0,
 
 
 volatile float

@@ -327,9 +327,8 @@ void Pracenje_pravca(void)
 		}
 		if (teta_cilj_final != 0xFFFFFFFF)	//ako treba zauzmemo krajnji ugao
 		{
-			
-				teta_cilj = teta_cilj_final;
-				teta_cilj_final = 0xFFFFFFFF;
+			teta_cilj=teta_cilj_final;
+			teta_cilj_final = 0xFFFFFFFF;
 		}
 		
 	}

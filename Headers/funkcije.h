@@ -12,7 +12,6 @@
 void nuliraj_poziciju_robota(void);
 
 void postavi_sistem(signed long x, signed long y, signed long ugao);
-
 void zadaj_X_Y_teta(signed long x, signed long y, signed long teta_des, unsigned char dir);
 void zadaj_X_Y(signed long x, signed long y, unsigned char dir);
 void zadaj_teta(signed long teta_des, unsigned char dir);
